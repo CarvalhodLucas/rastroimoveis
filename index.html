@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rastro Imóveis — Encontre onde viver</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #141210;
+      --warm: #1E1A16;
+      --stone: #2E2920;
+      --sand: #C8B89A;
+      --sand-light: #E8DDD0;
+      --cream: #F5F0EA;
+      --white: #FDFCFB;
+      --muted: #9A8E82;
+      --border: rgba(200,184,154,0.2);
+      --font-display: 'Italiana', serif;
+      --font-body: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    #cur { width:8px; height:8px; background:var(--sand); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transition:transform 0.2s; mix-blend-mode:multiply; }
+    #cur2 { width:32px; height:32px; border:1px solid var(--sand); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transition:all 0.1s ease; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 28px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      mix-blend-mode: normal;
+      transition: all 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(253,252,251,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 56px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem; color: var(--white);
+      text-decoration: none; letter-spacing: 0.04em;
+      transition: color 0.4s;
+    }
+    nav.scrolled .nav-logo { color: var(--ink); }
+    .nav-center { display: flex; gap: 40px; list-style: none; }
+    .nav-center a {
+      font-size: 0.78rem; font-weight: 400;
+      color: rgba(255,255,255,0.5); text-decoration: none;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.4s;
+    }
+    nav.scrolled .nav-center a { color: var(--muted); }
+    .nav-center a:hover { color: var(--white); }
+    nav.scrolled .nav-center a:hover { color: var(--ink); }
+    .nav-right { display: flex; gap: 16px; align-items: center; }
+    .nav-tag {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 8px 18px; border-radius: 100px;
+      text-decoration: none; transition: all 0.4s;
+    }
+    nav.scrolled .nav-tag { color: var(--muted); border-color: var(--border); }
+    .nav-tag:hover { border-color: var(--sand) !important; color: var(--white) !important; }
+    nav.scrolled .nav-tag:hover { color: var(--ink) !important; }
+    .nav-lang {
+      display: flex; gap: 12px; margin-right: 8px;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .nav-lang span { cursor: pointer; color: rgba(255,255,255,0.4); transition: all 0.4s; }
+    nav.scrolled .nav-lang span { color: var(--muted); }
+    .nav-lang span.active { color: var(--white); font-weight: 700; border-bottom: 1px solid var(--white); }
+    nav.scrolled .nav-lang span.active { color: var(--ink); border-bottom-color: var(--ink); }
+    .nav-lang span:hover { color: var(--white); }
+    nav.scrolled .nav-lang span:hover { color: var(--ink); }
+    .nav-cta {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--ink); color: var(--cream);
+      padding: 9px 22px; border-radius: 100px;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--stone); }
+
+    /* HERO — full screen editorial */
+    .hero {
+      height: 100vh; position: relative;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+      background: var(--ink);
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, #2A2318 0%, #141210 60%);
+    }
+    /* Architectural grid lines */
+    .hero-lines {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hero-lines::before {
+      content: '';
+      position: absolute; top: 0; left: 33.33%; bottom: 0;
+      width: 1px; background: rgba(200,184,154,0.08);
+    }
+    .hero-lines::after {
+      content: '';
+      position: absolute; top: 0; left: 66.66%; bottom: 0;
+      width: 1px; background: rgba(200,184,154,0.08);
+    }
+
+    /* Big number */
+    .hero-number {
+      position: absolute; right: 48px; top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-display);
+      font-size: clamp(12rem, 20vw, 22rem);
+      color: rgba(200,184,154,0.04);
+      line-height: 1; pointer-events: none;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 56px 72px;
+      width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: flex-end;
+    }
+    .hero-left { }
+    .hero-eyebrow {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--sand); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+      animation: fadeUp 1s ease both;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--sand); }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(4rem, 7vw, 8rem);
+      font-weight: 400; color: var(--white);
+      line-height: 0.92; letter-spacing: -0.02em;
+      animation: fadeUp 1s 0.1s ease both;
+    }
+    .hero h1 em { font-style: italic; color: var(--sand); }
+
+    .hero-right {
+      display: flex; flex-direction: column; justify-content: flex-end; gap: 28px;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-sub {
+      font-size: 0.9rem; font-weight: 300;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.8; max-width: 340px; align-self: flex-end;
+    }
+    .hero-actions { display: flex; gap: 12px; align-self: flex-end; }
+    .btn-sand {
+      background: var(--sand); color: var(--ink);
+      font-weight: 600; font-size: 0.78rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none; transition: all 0.2s;
+      border: none; cursor: pointer; font-family: var(--font-body);
+    }
+    .btn-sand:hover { background: var(--sand-light); transform: translateY(-2px); }
+    .btn-ghost-sand {
+      background: transparent; color: rgba(255,255,255,0.5);
+      font-weight: 400; font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none; transition: all 0.2s;
+      border: 1px solid rgba(200,184,154,0.2);
+      cursor: pointer; font-family: var(--font-body);
+    }
+    .btn-ghost-sand:hover { border-color: var(--sand); color: var(--sand); }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.2); font-size: 0.65rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      animation: fadeUp 1s 0.6s ease both;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(200,184,154,0.4), transparent);
+      animation: scrollPulse 2s infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.4;transform:scaleY(0.7)} }
+
+    @keyframes fadeUp {
+      from{opacity:0;transform:translateY(24px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    /* IMOVEIS — cinematic layout */
+    .imoveis-section {
+      background: var(--cream);
+      padding: 120px 0 0;
+    }
+    .imoveis-header {
+      padding: 0 56px 64px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .imoveis-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 400; line-height: 1;
+      letter-spacing: -0.02em; color: var(--ink);
+    }
+    .imoveis-title em { font-style: italic; color: var(--muted); }
+    .imoveis-filters { display: flex; gap: 8px; }
+    .filter-btn {
+      font-size: 0.74rem; font-weight: 500;
+      letter-spacing: 0.06em; padding: 8px 18px;
+      border-radius: 100px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      cursor: pointer; transition: all 0.2s; font-family: var(--font-body);
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--ink); color: var(--cream); border-color: var(--ink);
+    }
+
+    /* Imóvel featured — full width cinematic */
+    .imovel-featured {
+      position: relative; cursor: pointer;
+      overflow: hidden;
+    }
+    .imovel-featured-inner {
+      display: grid; grid-template-columns: 1.2fr 0.8fr;
+      min-height: 85vh;
+    }
+
+    /* Video / image side */
+    .imovel-media {
+      position: relative; overflow: hidden; background: var(--ink);
+    }
+    .imovel-media video, .imovel-media iframe {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .imovel-media-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, transparent 60%, rgba(245,240,234,0.3) 100%);
+      pointer-events: none;
+    }
+    .imovel-media-mock {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #1a1510 0%, #2d2418 40%, #1e1a14 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .mock-room {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.4) 100%),
+        radial-gradient(ellipse at 30% 60%, rgba(200,184,154,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(200,184,154,0.04) 0%, transparent 50%);
+    }
+    .mock-window {
+      position: absolute; top: 15%; right: 15%;
+      width: 35%; height: 50%;
+      border: 1px solid rgba(200,184,154,0.15);
+      background: linear-gradient(180deg, rgba(200,184,154,0.03) 0%, rgba(200,184,154,0.08) 100%);
+    }
+    .mock-floor {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 30%;
+      background: linear-gradient(to top, rgba(200,184,154,0.06) 0%, transparent 100%);
+      border-top: 1px solid rgba(200,184,154,0.08);
+    }
+    .play-btn {
+      position: absolute; z-index: 3;
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(200,184,154,0.15);
+      border: 1px solid rgba(200,184,154,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.4rem;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s; cursor: pointer;
+    }
+    .play-btn:hover { background: var(--sand); color: var(--ink); transform: scale(1.1); }
+    .imovel-tag {
+      position: absolute; top: 28px; left: 28px; z-index: 3;
+      background: var(--sand); color: var(--ink);
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 100px;
+    }
+
+    /* Info / chat side */
+    .imovel-info-chat {
+      background: var(--cream);
+      display: flex; flex-direction: column;
+      border-left: 1px solid var(--border);
+    }
+    .imovel-info {
+      padding: 48px 40px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .imovel-loc {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .imovel-name {
+      font-family: var(--font-display);
+      font-size: 2.2rem; font-weight: 400;
+      line-height: 1.05; letter-spacing: -0.01em;
+      color: var(--ink); margin-bottom: 16px;
+    }
+    .imovel-price {
+      font-family: var(--font-display);
+      font-size: 1.8rem; color: var(--ink); font-weight: 400;
+      margin-bottom: 20px;
+    }
+    .imovel-price span { font-size: 0.9rem; color: var(--muted); font-family: var(--font-body); font-weight: 300; }
+    .imovel-specs {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 12px; margin-bottom: 20px;
+    }
+    .spec {
+      background: white; border-radius: 8px; padding: 12px;
+      border: 1px solid var(--border); text-align: center;
+    }
+    .spec-val { font-weight: 700; font-size: 1rem; color: var(--ink); }
+    .spec-key { font-size: 0.68rem; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; }
+    .imovel-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--border); margin: 0 -40px; padding: 0 40px;
+    }
+    .itab {
+      font-size: 0.74rem; font-weight: 500;
+      letter-spacing: 0.06em; padding: 10px 0; margin-right: 24px;
+      border-bottom: 2px solid transparent; cursor: pointer;
+      color: var(--muted); transition: all 0.2s;
+      background: none; border-top: none; border-left: none; border-right: none;
+      font-family: var(--font-body);
+    }
+    .itab.active { color: var(--ink); border-bottom-color: var(--ink); }
+    .imovel-desc {
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.8; font-weight: 300; margin-top: 16px;
+    }
+
+    /* Chat panel */
+    .chat-panel { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .chat-panel-head {
+      padding: 16px 40px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .chat-panel-title {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .online-dot { width:6px; height:6px; border-radius:50%; background:#22c55e; animation: pulse 2s infinite; }
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    .chat-panel-lang {
+      font-size: 0.68rem; color: var(--muted);
+      display: flex; gap: 8px;
+    }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 20px 40px;
+      display: flex; flex-direction: column; gap: 10px;
+      scroll-behavior: smooth; min-height: 200px; max-height: 320px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .cmsg {
+      max-width: 85%; padding: 10px 14px;
+      border-radius: 12px; font-size: 0.81rem; line-height: 1.6;
+      animation: msgIn 0.3s ease;
+    }
+    @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .cmsg.bot {
+      background: white; color: var(--ink);
+      align-self: flex-start; border-bottom-left-radius: 3px;
+      border: 1px solid var(--border);
+    }
+    .cmsg.user {
+      background: var(--ink); color: var(--cream);
+      align-self: flex-end; border-bottom-right-radius: 3px;
+    }
+    .cmsg-t { font-size: 0.6rem; color: var(--muted); margin-top: 3px; }
+    .cmsg.user .cmsg-t { color: rgba(245,240,234,0.4); text-align: right; }
+
+    .chat-opts {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      padding: 0 40px 12px;
+    }
+    .copt {
+      font-size: 0.74rem; font-weight: 500;
+      padding: 6px 14px; border-radius: 100px;
+      border: 1px solid var(--border); background: white;
+      cursor: pointer; color: var(--ink); transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .copt:hover { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+
+    .chat-input-row {
+      padding: 12px 40px 20px; display: flex; gap: 8px;
+    }
+    .cinput {
+      flex: 1; border: 1px solid var(--border); border-radius: 100px;
+      padding: 10px 18px; font-size: 0.81rem;
+      font-family: var(--font-body); outline: none;
+      transition: border 0.2s; color: var(--ink); background: white;
+    }
+    .cinput:focus { border-color: var(--sand); }
+    .csend {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--ink); border: none; cursor: pointer;
+      color: var(--cream); font-size: 0.85rem; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .csend:hover { background: var(--stone); }
+
+    /* IMOVEIS GRID */
+    .imoveis-grid-section { background: var(--white); padding: 100px 56px; }
+    .grid-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 56px;
+    }
+    .grid-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem,4vw,4rem);
+      font-weight: 400; line-height: 1; letter-spacing: -0.02em;
+    }
+    .grid-title em { font-style: italic; color: var(--muted); }
+    .grid-count { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; }
+
+    .imoveis-list { display: flex; flex-direction: column; gap: 0; }
+    .imovel-row {
+      display: grid; grid-template-columns: 0.8fr 1.2fr auto;
+      gap: 0; border-top: 1px solid var(--border);
+      padding: 28px 0; align-items: center;
+      cursor: pointer; transition: all 0.2s;
+      position: relative;
+    }
+    .imovel-row:last-child { border-bottom: 1px solid var(--border); }
+    .imovel-row::after {
+      content: '→';
+      position: absolute; right: 0;
+      font-size: 1.2rem; color: var(--sand);
+      opacity: 0; transition: all 0.3s;
+      transform: translateX(-10px);
+    }
+    .imovel-row:hover { padding-left: 12px; }
+    .imovel-row:hover::after { opacity: 1; transform: translateX(0); }
+    .row-thumb {
+      width: 80px; height: 60px; border-radius: 6px;
+      background: var(--cream); overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; border: 1px solid var(--border);
+    }
+    .row-info { padding: 0 24px; }
+    .row-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem; font-weight: 400; color: var(--ink);
+      letter-spacing: -0.01em; margin-bottom: 4px;
+    }
+    .row-loc { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em; }
+    .row-specs { display: flex; gap: 16px; margin-top: 8px; }
+    .row-spec { font-size: 0.72rem; color: var(--muted); }
+    .row-spec strong { color: var(--ink); font-weight: 600; }
+    .row-price-wrap { text-align: right; }
+    .row-price {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 400; color: var(--ink);
+    }
+    .row-type {
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--sand); margin-bottom: 4px;
+    }
+
+    /* MANIFESTO section */
+    .manifesto {
+      background: var(--ink); padding: 120px 56px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .manifesto-text { }
+    .manifesto-label {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--sand); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .manifesto-label::before { content: ''; width: 24px; height: 1px; background: var(--sand); }
+    .manifesto-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4vw, 4.5rem);
+      font-weight: 400; color: var(--white);
+      line-height: 1.05; letter-spacing: -0.02em;
+    }
+    .manifesto-title em { font-style: italic; color: var(--sand); }
+    .manifesto-body {
+      font-size: 0.88rem; color: rgba(255,255,255,0.4);
+      line-height: 1.9; margin-top: 24px; font-weight: 300; max-width: 400px;
+    }
+    .manifesto-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+      background: rgba(200,184,154,0.08);
+    }
+    .mstat {
+      padding: 40px 36px;
+      background: rgba(20,18,16,0.6);
+    }
+    .mstat-num {
+      font-family: var(--font-display);
+      font-size: 3rem; font-weight: 400;
+      color: var(--white); line-height: 1;
+    }
+    .mstat-num span { color: var(--sand); }
+    .mstat-label { font-size: 0.78rem; color: rgba(255,255,255,0.3); margin-top: 8px; letter-spacing: 0.04em; }
+
+    /* CTA strip */
+    .cta-strip {
+      background: var(--sand); padding: 64px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cta-strip-text {
+      font-family: var(--font-display);
+      font-size: clamp(2rem,3.5vw,3.5rem);
+      font-weight: 400; color: var(--ink);
+      letter-spacing: -0.02em; line-height: 1.1;
+    }
+    .cta-strip-text em { font-style: italic; color: var(--stone); }
+    .cta-strip-actions { display: flex; gap: 12px; flex-shrink: 0; }
+    .btn-ink {
+      background: var(--ink); color: var(--cream);
+      font-family: var(--font-body); font-weight: 600;
+      font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 14px 28px; border-radius: 100px;
+      text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-ink:hover { background: var(--stone); transform: translateY(-2px); }
+    .btn-outline-ink {
+      background: transparent; color: var(--ink);
+      font-family: var(--font-body); font-weight: 500;
+      font-size: 0.78rem; letter-spacing: 0.08em;
+      padding: 14px 28px; border-radius: 100px;
+      border: 1.5px solid rgba(20,18,16,0.25);
+      text-decoration: none; transition: all 0.2s; cursor: pointer;
+    }
+    .btn-outline-ink:hover { border-color: var(--ink); }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink); padding: 64px 56px 32px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+      border-bottom: 1px solid rgba(200,184,154,0.1);
+    }
+    .footer-logo-big {
+      font-family: var(--font-display);
+      font-size: 2rem; color: white; letter-spacing: 0.04em;
+    }
+    .footer-desc {
+      font-size: 0.8rem; color: rgba(255,255,255,0.25);
+      line-height: 1.8; margin-top: 12px; max-width: 260px;
+    }
+    .footer-col h4 {
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--sand); margin-bottom: 18px; opacity: 0.7;
+    }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a {
+      font-size: 0.8rem; color: rgba(255,255,255,0.3);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: white; }
+    .footer-bottom {
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+    .made { font-size: 0.72rem; color: rgba(255,255,255,0.18); }
+    .made span { color: var(--sand); opacity: 0.7; }
+
+    /* Float */
+    .float-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      background: var(--ink); color: var(--cream);
+      border: 1px solid rgba(200,184,154,0.2);
+      border-radius: 100px; cursor: pointer;
+      padding: 12px 22px; font-family: var(--font-body);
+      font-size: 0.76rem; font-weight: 500; letter-spacing: 0.06em;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+      animation: floatIn 0.5s 1s ease both;
+    }
+    .float-btn:hover { background: var(--stone); transform: translateY(-2px); }
+    @keyframes floatIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(20px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){
+      nav{padding:16px 20px;}
+      .nav-center,.nav-tag{display:none;}
+      .hero{align-items:flex-start;}
+      .hero-content{grid-template-columns:1fr;padding:120px 20px 60px;gap:32px;}
+      .hero-right{align-self:flex-start;}
+      .hero-sub{max-width:100%;align-self:flex-start;}
+      .hero-actions{align-self:flex-start;}
+      .hero h1{font-size:clamp(3rem,12vw,5rem);}
+      .imovel-featured-inner{grid-template-columns:1fr;min-height:auto;}
+      .imovel-media{height:50vh;}
+      .imoveis-header{flex-direction:column;gap:20px;padding:0 20px 40px;}
+      .imoveis-grid-section{padding:60px 20px;}
+      .imovel-row{grid-template-columns:1fr;gap:12px;}
+      .row-thumb{display:none;}
+      .manifesto{grid-template-columns:1fr;padding:60px 20px;}
+      .cta-strip{flex-direction:column;gap:28px;padding:48px 20px;text-align:center;}
+      .footer-top{grid-template-columns:1fr 1fr;padding:32px 20px;gap:28px;}
+      footer{padding:40px 20px 24px;}
+    }
+
+    /* AGENCY CHAT (Floating) */
+    .agency-chat {
+      position: fixed; bottom: 90px; right: 28px;
+      width: 760px; height: 500px;
+      max-width: calc(100vw - 56px);
+      background: rgba(253,252,251,0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      z-index: 200;
+      overflow: hidden;
+      transform: translateY(20px) scale(0.95);
+      opacity: 0; pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transform-origin: bottom right;
+    }
+    .agency-chat.open {
+      transform: translateY(0) scale(1);
+      opacity: 1; pointer-events: all;
+    }
+    .agency-chat-head {
+      padding: 24px; background: var(--ink); color: var(--cream);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .agency-chat-info { display: flex; align-items: center; gap: 12px; }
+    .agency-chat-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--sand); display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: var(--ink);
+    }
+    .agency-chat-status { font-size: 0.75rem; opacity: 0.7; }
+    .agency-chat-name { font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em; }
+    .agency-chat-close {
+      background: none; border: none; color: var(--cream);
+      cursor: pointer; font-size: 1.2rem; opacity: 0.5; transition: opacity 0.2s;
+    }
+    .agency-chat-close:hover { opacity: 1; }
+
+    .agency-messages {
+      flex: 1; overflow-y: auto; padding: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .agency-messages::-webkit-scrollbar { width: 4px; }
+    .agency-messages::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .amsg {
+      max-width: 85%; padding: 12px 16px;
+      border-radius: 16px; font-size: 0.85rem; line-height: 1.5;
+      animation: msgIn 0.3s ease both;
+    }
+    .amsg.bot {
+      background: var(--cream); color: var(--ink);
+      align-self: flex-start; border-bottom-left-radius: 4px;
+    }
+    .amsg.user {
+      background: var(--sand); color: var(--ink);
+      align-self: flex-end; border-bottom-right-radius: 4px;
+    }
+
+    .agency-input-area {
+      padding: 20px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px;
+    }
+    .ainput {
+      flex: 1; border: 1px solid var(--border); border-radius: 100px;
+      padding: 12px 20px; font-size: 0.85rem; outline: none;
+      font-family: var(--font-body);
+    }
+    .asend {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--ink); border: none; cursor: pointer;
+      color: var(--cream); display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .asend:hover { transform: scale(1.05); }
+
+    @media(max-width:480px) {
+      .agency-chat {
+        width: calc(100vw - 32px); height: calc(100vh - 120px);
+        right: 16px; bottom: 85px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cur"></div>
+  <div id="cur2"></div>
+
+  <button class="float-btn" id="agencyBtn" onclick="toggleAgencyChat()">
+    <span class="online-dot"></span>
+    Falar com a imobiliária
+  </button>
+
+  <div class="agency-chat" id="agencyChat">
+    <div class="agency-chat-head">
+      <div class="agency-chat-info">
+        <div class="agency-chat-avatar">🏢</div>
+        <div>
+          <div class="agency-chat-name" data-i18n="agency-name">Rastro Imóveis</div>
+          <div class="agency-chat-status" data-i18n="agency-status">Online agora</div>
+        </div>
+      </div>
+      <button class="agency-chat-close" onclick="toggleAgencyChat()">✕</button>
+    </div>
+    <div class="agency-messages" id="agencyMsgs">
+      <div class="amsg bot">
+        Olá! Seja bem-vindo à <strong>Rastro Imóveis</strong>. 🏢<br/><br/>
+        Como podemos ajudar você hoje? Estamos prontos para encontrar seu novo lar ou tirar dúvidas sobre nossa imobiliária.
+      </div>
+    </div>
+    <div class="chat-opts" style="padding: 0 24px 12px;">
+      <button class="copt" onclick="agencyAsk('vender')">🏷️ Quero vender</button>
+      <button class="copt" onclick="agencyAsk('alugar')">🔑 Quero alugar</button>
+      <button class="copt" onclick="agencyAsk('human')">👤 Falar com corretor</button>
+    </div>
+    <div class="agency-input-area">
+      <input class="ainput" id="agencyInput" placeholder="Sua mensagem..." onkeydown="if(event.key==='Enter')sendAgencyMsg()"/>
+      <button class="asend" onclick="sendAgencyMsg()">➤</button>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-logo">Rastro Imóveis</a>
+    <ul class="nav-center">
+      <li><a href="#imoveis" data-i18n="nav-comprar">Comprar</a></li>
+      <li><a href="#imoveis" data-i18n="nav-alugar">Alugar</a></li>
+      <li><a href="#manifesto" data-i18n="nav-sobre">Sobre</a></li>
+      <li><a href="#contato" data-i18n="nav-contato">Contato</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="nav-lang">
+        <span id="lang-es" onclick="setLanguage('es')">ES</span>
+        <span id="lang-pt" onclick="setLanguage('pt')">PT</span>
+      </div>
+      <a href="tel:+5511900000000" class="nav-tag">+55 11 9000-0000</a>
+      <a href="#imoveis" class="nav-cta" data-i18n="nav-cta">Ver imóveis</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-lines"></div>
+    <div class="hero-number">R</div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-eyebrow" data-i18n="hero-eyebrow">Imobiliária premium</div>
+        <h1 data-i18n-html="hero-title">Encontre<br/>onde<br/><em>viver</em></h1>
+      </div>
+      <div class="hero-right">
+        <p class="hero-sub" data-i18n="hero-sub">Curadoria exclusiva de imóveis para compra e aluguel — com assistente virtual que conhece cada detalhe de cada propriedade.</p>
+        <div class="hero-actions">
+          <button class="btn-sand" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="hero-btn-view">Ver imóveis →</button>
+          <button class="btn-ghost-sand" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="hero-btn-chat">Falar com assistente</button>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      scroll
+    </div>
+  </section>
+
+  <!-- IMOVEIS SECTION -->
+  <div class="imoveis-section">
+    <div class="imoveis-header reveal">
+      <div>
+        <div class="imoveis-title" data-i18n-html="featured-title">Imóvel em<br/><em>destaque</em></div>
+      </div>
+      <div class="imoveis-filters">
+        <button class="filter-btn active" onclick="switchImovel(0,this)" data-i18n="filter-cobertura">Cobertura</button>
+        <button class="filter-btn" onclick="switchImovel(1,this)" data-i18n="filter-apartamento">Apartamento</button>
+        <button class="filter-btn" onclick="switchImovel(2,this)" data-i18n="filter-casa">Casa</button>
+      </div>
+    </div>
+
+    <!-- Featured imovel — video + chat -->
+    <div class="imovel-featured">
+      <div class="imovel-featured-inner">
+
+        <!-- Media side -->
+        <div class="imovel-media" id="mediaPanel">
+          <div class="imovel-tag" id="imovelTag">VENDA</div>
+          <div class="imovel-media-mock" id="mediaMock">
+            <div class="mock-room"></div>
+            <div class="mock-window"></div>
+            <div class="mock-floor"></div>
+            <!-- YouTube embed placeholder -->
+            <div id="videoEmbed" style="position:absolute;inset:0;display:none;">
+              <iframe id="ytFrame" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="display:block;"></iframe>
+            </div>
+            <div class="play-btn" id="playBtn" onclick="playVideo()">▶</div>
+          </div>
+          <div class="imovel-media-overlay"></div>
+        </div>
+
+        <!-- Info + Chat side -->
+        <div class="imovel-info-chat">
+          <div class="imovel-info">
+            <div class="imovel-loc" id="imovelLoc">📍 Jardins, São Paulo — SP</div>
+            <div class="imovel-name" id="imovelName">Cobertura Duplex<br/>Vista Panorâmica</div>
+            <div class="imovel-price" id="imovelPrice">R$ 4.200.000 <span>/ venda</span></div>
+            <div class="imovel-specs">
+              <div class="spec"><div class="spec-val" id="spec1">320m²</div><div class="spec-key">Área total</div></div>
+              <div class="spec"><div class="spec-val" id="spec2">4</div><div class="spec-key">Quartos</div></div>
+              <div class="spec"><div class="spec-val" id="spec3">3</div><div class="spec-key">Vagas</div></div>
+            </div>
+            <div class="imovel-tabs">
+              <button class="itab active" onclick="switchTab('desc',this)" data-i18n="tab-desc">Descrição</button>
+              <button class="itab" onclick="switchTab('detalhes',this)" data-i18n="tab-detalhes">Detalhes</button>
+              <button class="itab" onclick="switchTab('local',this)" data-i18n="tab-local">Localização</button>
+            </div>
+            <div class="imovel-desc" id="tabContent">Cobertura duplex de alto padrão com terraço privativo e vista 360° para a cidade. Acabamentos nobres, cozinha gourmet integrada, home theater e piscina privativa no terraço superior.</div>
+          </div>
+
+          <!-- Chat -->
+          <div class="chat-panel">
+            <div class="chat-panel-head">
+              <div class="chat-panel-title">
+                <span class="online-dot"></span>
+                <span data-i18n="chat-property-title">Assistente do imóvel</span>
+              </div>
+              <div class="chat-panel-lang" data-i18n="chat-property-sub">Pergunte sobre este imóvel</div>
+            </div>
+            <div class="chat-messages" id="chatMsgs">
+              <div class="cmsg bot">
+                Olá! 👋 Sou o assistente da <strong>Cobertura Duplex nos Jardins</strong>.<br/><br/>
+                Conheço cada detalhe deste imóvel. O que gostaria de saber?
+                <div class="cmsg-t">agora</div>
+              </div>
+            </div>
+            <div class="chat-opts" id="chatOpts">
+              <button class="copt" onclick="ask('preco')">💰 Valor e condições</button>
+              <button class="copt" onclick="ask('metragem')">📐 Metragem</button>
+              <button class="copt" onclick="ask('localizacao')">📍 Localização</button>
+              <button class="copt" onclick="ask('visita')">📅 Agendar visita</button>
+            </div>
+            <div class="chat-input-row">
+              <input class="cinput" id="chatInput" placeholder="Faça uma pergunta sobre este imóvel..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+              <button class="csend" onclick="sendMsg()">➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID DE IMOVEIS -->
+  <div class="imoveis-grid-section" id="imoveis">
+    <div class="grid-header reveal">
+      <div class="grid-title" data-i18n-html="grid-title">Outros<br/><em>imóveis</em></div>
+      <div class="grid-count" data-i18n="grid-count">12 imóveis disponíveis</div>
+    </div>
+    <div class="imoveis-list">
+      <div class="imovel-row reveal" onclick="switchImovel(1,null)">
+        <div class="row-thumb">🏢</div>
+        <div class="row-info">
+          <div class="row-name">Apartamento Alto Padrão</div>
+          <div class="row-loc">Pinheiros, São Paulo — SP</div>
+          <div class="row-specs">
+            <div class="row-spec"><strong>180m²</strong> área</div>
+            <div class="row-spec"><strong>3</strong> quartos</div>
+            <div class="row-spec"><strong>2</strong> vagas</div>
+          </div>
+        </div>
+        <div class="row-price-wrap">
+          <div class="row-type">Venda</div>
+          <div class="row-price">R$ 1.850.000</div>
+        </div>
+      </div>
+      <div class="imovel-row reveal" onclick="switchImovel(2,null)">
+        <div class="row-thumb">🏡</div>
+        <div class="row-info">
+          <div class="row-name">Casa em Condomínio</div>
+          <div class="row-loc">Alphaville, Barueri — SP</div>
+          <div class="row-specs">
+            <div class="row-spec"><strong>420m²</strong> área</div>
+            <div class="row-spec"><strong>5</strong> quartos</div>
+            <div class="row-spec"><strong>4</strong> vagas</div>
+          </div>
+        </div>
+        <div class="row-price-wrap">
+          <div class="row-type">Venda</div>
+          <div class="row-price">R$ 3.100.000</div>
+        </div>
+      </div>
+      <div class="imovel-row reveal">
+        <div class="row-thumb">🏠</div>
+        <div class="row-info">
+          <div class="row-name">Studio Moderno</div>
+          <div class="row-loc">Vila Madalena, São Paulo — SP</div>
+          <div class="row-specs">
+            <div class="row-spec"><strong>45m²</strong> área</div>
+            <div class="row-spec"><strong>1</strong> quarto</div>
+            <div class="row-spec"><strong>1</strong> vaga</div>
+          </div>
+        </div>
+        <div class="row-price-wrap">
+          <div class="row-type">Aluguel</div>
+          <div class="row-price">R$ 3.800/mês</div>
+        </div>
+      </div>
+      <div class="imovel-row reveal">
+        <div class="row-thumb">🏙️</div>
+        <div class="row-info">
+          <div class="row-name">Loft Industrial</div>
+          <div class="row-loc">Moema, São Paulo — SP</div>
+          <div class="row-specs">
+            <div class="row-spec"><strong>95m²</strong> área</div>
+            <div class="row-spec"><strong>1</strong> quarto</div>
+            <div class="row-spec"><strong>1</strong> vaga</div>
+          </div>
+        </div>
+        <div class="row-price-wrap">
+          <div class="row-type">Aluguel</div>
+          <div class="row-price">R$ 6.500/mês</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="manifesto" id="manifesto">
+    <div class="manifesto-text reveal">
+      <div class="manifesto-label" data-i18n="manifesto-label">Nossa filosofia</div>
+      <div class="manifesto-title" data-i18n-html="manifesto-title">Mais que<br/>imóveis —<br/><em>lares</em></div>
+      <p class="manifesto-body" data-i18n="manifesto-body">Acreditamos que encontrar o imóvel certo é uma das decisões mais importantes da vida. Por isso combinamos curadoria humana com tecnologia — para que você tenha todas as informações antes de decidir.</p>
+    </div>
+    <div class="manifesto-stats reveal">
+      <div class="mstat"><div class="mstat-num">850<span>+</span></div><div class="mstat-label" data-i18n="mstat-sold">Imóveis vendidos</div></div>
+      <div class="mstat"><div class="mstat-num">12<span data-i18n="mstat-years">anos</span></div><div class="mstat-label" data-i18n="mstat-exp">De experiência</div></div>
+      <div class="mstat"><div class="mstat-num">98<span>%</span></div><div class="mstat-label" data-i18n="mstat-sat">Satisfação</div></div>
+      <div class="mstat"><div class="mstat-num">24<span data-i18n="mstat-hours">h</span></div><div class="mstat-label" data-i18n="mstat-active">Assistente ativo</div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-strip reveal" id="contato">
+    <div class="cta-strip-text" data-i18n-html="cta-title">Encontrou o imóvel<br/><em>dos seus sonhos?</em></div>
+    <div class="cta-strip-actions">
+      <button class="btn-ink" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="cta-btn-chat">Falar com assistente →</button>
+      <a href="tel:+5511900000000" class="btn-outline-ink" data-i18n="cta-btn-call">Ligar agora</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo-big">Rastro Imóveis</div>
+        <p class="footer-desc" data-i18n="footer-desc">Curadoria exclusiva de imóveis premium com assistente virtual disponível 24 horas.</p>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-h-search">Buscar</h4>
+        <div class="footer-links">
+          <a href="#" data-i18n="nav-comprar">Comprar</a>
+          <a href="#" data-i18n="nav-alugar">Alugar</a>
+          <a href="#" data-i18n="footer-link-launch">Lançamentos</a>
+          <a href="#" data-i18n="footer-link-high">Alto padrão</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-h-company">Empresa</h4>
+        <div class="footer-links">
+          <a href="#" data-i18n="footer-link-about">Sobre nós</a>
+          <a href="#" data-i18n="footer-link-agents">Corretores</a>
+          <a href="#" data-i18n="footer-link-blog">Blog</a>
+          <a href="#" data-i18n="footer-link-valuation">Avalie seu imóvel</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4 data-i18n="footer-h-contact">Contato</h4>
+        <div class="footer-links">
+          <a href="#">+55 11 9000-0000</a>
+          <a href="#">contato@rastro.com.br</a>
+          <a href="#">São Paulo — SP</a>
+          <a href="#" data-i18n="footer-link-hours">Seg–Sex 09h–18h</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Rastro Imóveis — CRECI 000.000/SP</p>
+      <p class="made"><span data-i18n="footer-developed">Desenvolvido por</span> <span>Rastro Studio</span></p>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cur = document.getElementById('cur');
+    const cur2 = document.getElementById('cur2');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{
+      mx=e.clientX; my=e.clientY;
+      cur.style.left=mx-4+'px'; cur.style.top=my-4+'px';
+    });
+    (function anim(){
+      rx+=(mx-rx-16)*0.12; ry+=(my-ry-16)*0.12;
+      cur2.style.left=rx+'px'; cur2.style.top=ry+'px';
+      requestAnimationFrame(anim);
+    })();
+    document.querySelectorAll('a,button,.imovel-row').forEach(el=>{
+      el.addEventListener('mouseenter',()=>cur.style.transform='scale(3)');
+      el.addEventListener('mouseleave',()=>cur.style.transform='scale(1)');
+    });
+
+    // Nav
+    window.addEventListener('scroll',()=>{
+      document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60);
+    });
+
+    // Reveal
+    const obs=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+    },{threshold:0.08});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+    // Multilingual Dictionary
+    const translations = {
+      es: {
+        'nav-comprar': 'Comprar',
+        'nav-alugar': 'Alquilar',
+        'nav-sobre': 'Nosotros',
+        'nav-contato': 'Contacto',
+        'nav-cta': 'Ver inmuebles',
+        'hero-eyebrow': 'Inmobiliaria premium',
+        'hero-title': 'Encuentra<br/>dónde<br/><em>vivir</em>',
+        'hero-sub': 'Curaduría exclusiva de inmuebles para compra y alquiler — con asistente virtual que conoce cada detalle de cada propiedad.',
+        'hero-btn-view': 'Ver inmuebles →',
+        'hero-btn-chat': 'Hablar con asistente',
+        'featured-title': 'Inmueble en<br/><em>destaque</em>',
+        'filter-cobertura': 'Penthouse',
+        'filter-apartamento': 'Apartamento',
+        'filter-casa': 'Casa',
+        'tab-desc': 'Descripción',
+        'tab-detalhes': 'Detalles',
+        'tab-local': 'Ubicación',
+        'chat-property-title': 'Asistente del inmueble',
+        'chat-property-sub': 'Pregunte sobre este inmueble',
+        'grid-title': 'Otros<br/><em>inmuebles</em>',
+        'grid-count': '12 inmuebles disponibles',
+        'manifesto-label': 'Nuestra filosofía',
+        'manifesto-title': 'Más que<br/>inmuebles —<br/><em>hogares</em>',
+        'manifesto-body': 'Creemos que encontrar el inmueble adecuado es una de las decisiones más importantes de la vida. Por eso combinamos curaduría humana con tecnología — para que tengas toda la información antes de decidir.',
+        'mstat-sold': 'Inmuebles vendidos',
+        'mstat-years': 'años',
+        'mstat-exp': 'De experiencia',
+        'mstat-sat': 'Satisfacción',
+        'mstat-hours': 'h',
+        'mstat-active': 'Asistente activo',
+        'cta-title': '¿Encontró el inmueble<br/><em>de sus sueños?</em>',
+        'cta-btn-chat': 'Hablar con asistente →',
+        'cta-btn-call': 'Llamar ahora',
+        'footer-desc': 'Curaduría exclusiva de inmuebles premium con asistente virtual disponible 24 horas.',
+        'footer-h-search': 'Buscar',
+        'footer-link-launch': 'Lanzamientos',
+        'footer-link-high': 'Alto estándar',
+        'footer-h-company': 'Empresa',
+        'footer-link-about': 'Sobre nosotros',
+        'footer-link-agents': 'Corredores',
+        'footer-link-blog': 'Blog',
+        'footer-link-valuation': 'Evalúe su inmueble',
+        'footer-h-contact': 'Contacto',
+        'footer-link-hours': 'Lun–Vie 09h–18h',
+        'footer-developed': 'Desarrollado por',
+        'agency-name': 'Rastro Inmuebles',
+        'agency-status': 'En línea ahora',
+        'agency-welcome': '¡Hola! Bienvenido a <strong>Rastro Inmuebles</strong>. 🏢<br/><br/>¿Cómo podemos ayudarle hoy? Estamos listos para encontrar su nuevo hogar.',
+        'opt-vender': '🏷️ Quiero vender',
+        'opt-alugar': '🔑 Quiero alquilar',
+        'opt-human': '👤 Hablar con corredor',
+        'chat-input-placeholder': 'Haga una pregunta sobre este inmueble...',
+        'agency-input-placeholder': 'Su mensaje...',
+        'agency-resp-vender': '¡Excelente! Para vender su inmueble con nosotros, necesitamos información básica. ¿Le gustaría agendar una evaluación gratuita?',
+        'agency-resp-alugar': 'Tenemos una amplia curaduría de inmuebles para alquilar. ¿Qué región le interesa en este momento?',
+        'agency-resp-human': 'Entendido. Le estoy conectando con uno de nuestros corredores. Por favor, espere un momento... ⏳',
+        'agency-resp-default': '¡Gracias por su mensaje! Hemos recibido su solicitud y un consultor se pondrá en contacto pronto.',
+        'tour-start': '🎥 ¡Tour en video iniciado! Observe los espacios mientras resuelvo sus dudas. ¿Qué desea saber?',
+        'visit-confirm': '¡Perfecto! ✅<br/><br/>Visita agendada. Un corredor se pondrá en contacto en hasta 2 horas.<br/><br/>¿Alguna otra duda?',
+        'opt-price': '💰 Valor y condiciones',
+        'opt-size': '📐 Metraje',
+        'opt-loc': '📍 Ubicación',
+        'opt-visit': '📅 Agendar visita',
+        'now': 'ahora'
+      },
+      pt: {
+        'nav-comprar': 'Comprar',
+        'nav-alugar': 'Alugar',
+        'nav-sobre': 'Sobre',
+        'nav-contato': 'Contato',
+        'nav-cta': 'Ver imóveis',
+        'hero-eyebrow': 'Imobiliária premium',
+        'hero-title': 'Encontre<br/>onde<br/><em>viver</em>',
+        'hero-sub': 'Curadoria exclusiva de imóveis para compra e aluguel — com assistente virtual que conhece cada detalhe de cada propriedade.',
+        'hero-btn-view': 'Ver imóveis →',
+        'hero-btn-chat': 'Falar com assistente',
+        'featured-title': 'Imóvel em<br/><em>destaque</em>',
+        'filter-cobertura': 'Cobertura',
+        'filter-apartamento': 'Apartamento',
+        'filter-casa': 'Casa',
+        'tab-desc': 'Descrição',
+        'tab-detalhes': 'Detalhes',
+        'tab-local': 'Localização',
+        'chat-property-title': 'Assistente do imóvel',
+        'chat-property-sub': 'Pergunte sobre este imóvel',
+        'grid-title': 'Outros<br/><em>imóveis</em>',
+        'grid-count': '12 imóveis disponíveis',
+        'manifesto-label': 'Nossa filosofia',
+        'manifesto-title': 'Mais que<br/>imóveis —<br/><em>lares</em>',
+        'manifesto-body': 'Acreditamos que encontrar o imóvel certo é uma das decisões mais importantes da vida. Por isso combinamos curadoria humana com tecnologia — para que você tenha todas as informações antes de decidir.',
+        'mstat-sold': 'Imóveis vendidos',
+        'mstat-years': 'anos',
+        'mstat-exp': 'De experiência',
+        'mstat-sat': 'Satisfação',
+        'mstat-hours': 'h',
+        'mstat-active': 'Assistente ativo',
+        'cta-title': 'Encontrou o imóvel<br/><em>dos seus sonhos?</em>',
+        'cta-btn-chat': 'Falar com assistente →',
+        'cta-btn-call': 'Ligar agora',
+        'footer-desc': 'Curadoria exclusiva de imóveis premium com assistente virtual disponível 24 horas.',
+        'footer-h-search': 'Buscar',
+        'footer-link-launch': 'Lançamentos',
+        'footer-link-high': 'Alto padrão',
+        'footer-h-company': 'Empresa',
+        'footer-link-about': 'Sobre nós',
+        'footer-link-agents': 'Corretores',
+        'footer-link-blog': 'Blog',
+        'footer-link-valuation': 'Avalie seu imóvel',
+        'footer-h-contact': 'Contato',
+        'footer-link-hours': 'Seg–Sex 09h–18h',
+        'footer-developed': 'Desenvolvido por',
+        'agency-name': 'Rastro Imóveis',
+        'agency-status': 'Online agora',
+        'agency-welcome': 'Olá! Seja bem-vindo à <strong>Rastro Imóveis</strong>. 🏢<br/><br/>Como podemos ajudar você hoje? Estamos prontos para encontrar seu novo lar.',
+        'opt-vender': '🏷️ Quero vender',
+        'opt-alugar': '🔑 Quero alugar',
+        'opt-human': '👤 Falar com corretor',
+        'chat-input-placeholder': 'Faça uma pergunta sobre este imóvel...',
+        'agency-input-placeholder': 'Sua mensagem...',
+        'agency-resp-vender': 'Excelente! Para vender seu imóvel conosco, precisamos de algumas informações básicas. Gostaria de agendar uma avaliação gratuita?',
+        'agency-resp-alugar': 'Temos uma vasta curadoria de imóveis para alugar. Qual região você tem interesse no momento?',
+        'agency-resp-human': 'Entendido. Estou conectando você com um de nossos corretores. Por favor, aguarde um momento... ⏳',
+        'agency-resp-default': 'Obrigado por sua mensagem! Recebemos sua solicitação e um consultor entrará em contato em breve.',
+        'tour-start': '🎥 Tour em vídeo iniciado! Observe os espaços enquanto tiro suas dúvidas. O que gostaria de saber?',
+        'visit-confirm': 'Perfeito! ✅<br/><br/>Visita agendada. Um corretor entrará em contato em até 2 horas.<br/><br/>Alguma outra dúvida?',
+        'opt-price': '💰 Valor e condições',
+        'opt-size': '📐 Metragem',
+        'opt-loc': '📍 Localização',
+        'opt-visit': '📅 Agendar visita',
+        'now': 'agora'
+      }
+    };
+
+    let currentLang = 'es';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) el.textContent = translations[lang][key];
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (translations[lang][key]) el.innerHTML = translations[lang][key];
+      });
+
+      // Update placeholders
+      document.getElementById('chatInput').placeholder = translations[lang]['chat-input-placeholder'];
+      document.getElementById('agencyInput').placeholder = translations[lang]['agency-input-placeholder'];
+
+      // Update active state in switcher
+      document.querySelectorAll('.nav-lang span').forEach(s => s.classList.remove('active'));
+      document.getElementById(`lang-${lang}`).classList.add('active');
+
+      // Update dynamic content
+      updatePropertyUI();
+      updateAgencyChatUI();
+    }
+
+    const tabContent = {
+      es: {
+        desc: 'Penthouse dúplex de alto estándar con terraza privada y vista 360° de la ciudad. Acabados nobles, cocina gourmet integrada, home theater y piscina privada.',
+        detalhes: '4 suites · 3 plazas · 320m² útiles · Techo de 3,2m · Aire acondicionado central · Automatización · Portería 24h · 2 ascensores privados',
+        local: 'Jardins, São Paulo — a 400m del Parque Trianon. Bairro noble con fácil acceso al metro y los mejores restaurantes de la ciudad.'
+      },
+      pt: {
+        desc: 'Cobertura duplex de alto padrão com terraço privativo e vista 360° para a cidade. Acabamentos nobres, cozinha gourmet integrada, home theater e piscina privativa no terraço superior.',
+        detalhes: '4 suítes · 3 vagas · 320m² úteis · Pé direito 3,2m · Ar-condicionado central · Automação residencial · Portaria 24h · 2 elevadores privativos',
+        local: 'Jardins, São Paulo — a 400m do Parque Trianon, próximo à Av. Paulista. Fácil acesso ao metrô Trianon-Masp. Cercado pelos melhores restaurantes e lojas da cidade.'
+      }
+    };
+
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.itab').forEach(t=>t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tabContent').textContent = tabContent[currentLang][tab];
+    }
+
+    // Imóveis data
+    const imoveis = [
+      {
+        tag: { pt: 'VENDA', es: 'VENTA' },
+        loc: { pt: '📍 Jardins, São Paulo — SP', es: '📍 Jardines, São Paulo — SP' },
+        name: { pt: 'Cobertura Duplex<br/>Vista Panorâmica', es: 'Penthouse Dúplex<br/>Vista Panorámica' },
+        price: 'R$ 4.200.000',
+        priceLabel: { pt: '/ venda', es: '/ venta' },
+        s1: '320m²', s2: '4', s3: '3',
+        intro: {
+          pt: 'Olá! 👋 Sou o assistente da <strong>Cobertura Duplex nos Jardins</strong>.<br/><br/>Conheço cada detalhe deste imóvel. O que gostaria de saber?',
+          es: '¡Hola! 👋 Soy el asistente del <strong>Penthouse Dúplex en Jardines</strong>.<br/><br/>Conozco cada detalle de este inmueble. ¿Qué le gustaría saber?'
+        },
+        qa: {
+          pt: {
+            preco: 'O valor de venda é <strong>R$ 4.200.000</strong>. Aceitamos financiamento bancário e permuta. Condições especiais para pagamento à vista.',
+            metragem: 'A cobertura tem <strong>320m² de área útil</strong> distribuídos em 2 andares. Terraço privativo de 80m² com piscina. Pé direito de 3,2m.',
+            localizacao: 'Localizada nos <strong>Jardins, São Paulo</strong> — a 400m do Parque Trianon. Bairro nobre com fácil acesso ao metrô.',
+            visita: 'Ótimo! Para agendar uma visita, me informe seu nome e melhor horário. Temos disponibilidade de segunda a sábado.'
+          },
+          es: {
+            preco: 'El valor de venta es <strong>R$ 4.200.000</strong>. Aceptamos financiamiento bancario y permuta. Condiciones especiales para pago al contado.',
+            metragem: 'El penthouse tiene <strong>320m² de área útil</strong> en 2 pisos. Terraza privada de 80m² con piscina. Techo de 3,2m.',
+            localizacao: 'Ubicado en <strong>Jardines, São Paulo</strong> — a 400m del Parque Trianon. Barrio noble con fácil acceso al metro.',
+            visita: '¡Excelente! Para agendar una visita, dígame su nombre y mejor horario. Disponibilidad de lunes a sábado.'
+          }
+        }
+      },
+      {
+        tag: { pt: 'VENDA', es: 'VENTA' },
+        loc: { pt: '📍 Pinheiros, São Paulo — SP', es: '📍 Pinheiros, São Paulo — SP' },
+        name: { pt: 'Apartamento Alto<br/>Padrão', es: 'Apartamento de<br/>Alto Estándar' },
+        price: 'R$ 1.850.000',
+        priceLabel: { pt: '/ venda', es: '/ venta' },
+        s1: '180m²', s2: '3', s3: '2',
+        intro: {
+          pt: 'Olá! 👋 Sou o assistente do <strong>Apartamento em Pinheiros</strong>.<br/><br/>Posso te contar tudo sobre este imóvel!',
+          es: '¡Hola! 👋 Soy el asistente del <strong>Apartamento en Pinheiros</strong>.<br/><br/>¡Puedo contarle todo sobre este inmueble!'
+        },
+        qa: {
+          pt: {
+            preco: 'O valor é <strong>R$ 1.850.000</strong>. Financiamento facilitado. Condomínio R$ 1.200/mês.',
+            metragem: '<strong>180m²</strong> de área útil. 3 suítes, master com closet e hidromassagem. Varanda gourmet.',
+            localizacao: '<strong>Pinheiros</strong> — um dos bairros mais valorizados de SP. A 5 min do metrô Fradique Coutinho.',
+            visita: 'Para agendar visita informe seu nome e horário preferido!'
+          },
+          es: {
+            preco: 'El valor es <strong>R$ 1.850.000</strong>. Financiamiento facilitado. Condominio R$ 1.200/mes.',
+            metragem: '<strong>180m²</strong> de área útil. 3 suites, master con closet e hidromasaje. Balcón gourmet.',
+            localizacao: '<strong>Pinheiros</strong> — uno de los barrios más valorizados de SP. A 5 min del metro Fradique Coutinho.',
+            visita: 'Para agendar visita, ¡dígame su nombre y horario preferido!'
+          }
+        }
+      },
+      {
+        tag: { pt: 'VENDA', es: 'VENTA' },
+        loc: { pt: '📍 Alphaville, Barueri — SP', es: '📍 Alphaville, Barueri — SP' },
+        name: { pt: 'Casa em<br/>Condomínio Fechado', es: 'Casa en<br/>Condominio Cerrado' },
+        price: 'R$ 3.100.000',
+        priceLabel: { pt: '/ venda', es: '/ venta' },
+        s1: '420m²', s2: '5', s3: '4',
+        intro: {
+          pt: 'Olá! 👋 Sou o assistente da <strong>Casa em Alphaville</strong>.<br/><br/>Uma das mais completas do condomínio. O que quer saber?',
+          es: '¡Hola! 👋 Soy el asistente de la <strong>Casa en Alphaville</strong>.<br/><br/>Una de las más completas del condominio. ¿Qué quiere saber?'
+        },
+        qa: {
+          pt: {
+            preco: 'Valor de <strong>R$ 3.100.000</strong>. Condomínio fechado com segurança 24h. IPTU R$ 6.800/ano.',
+            metragem: '<strong>420m²</strong> de área construída em terreno de 600m². 5 suítes, piscina aquecida e churrasqueira.',
+            localizacao: '<strong>Alphaville Residencial</strong>, Barueri. Condomínio de alto padrão a 25 min do centro de SP.',
+            visita: 'Visitas disponíveis aos fins de semana com agendamento prévio.'
+          },
+          es: {
+            preco: 'Valor de <strong>R$ 3.100.000</strong>. Condominio cerrado con seguridad 24h. IBI R$ 6.800/año.',
+            metragem: '<strong>420m²</strong> de área construida en terreno de 600m². 5 suites, piscina climatizada y barbacoa.',
+            localizacao: '<strong>Alphaville Residencial</strong>, Barueri. Condominio de alto estándar a 25 min del centro de SP.',
+            visita: 'Visitas disponibles los fines de semana con cita previa.'
+          }
+        }
+      }
+    ];
+
+    let currentImovel = 0;
+    let awaitingName = false;
+
+    function updatePropertyUI() {
+      const im = imoveis[currentImovel];
+      document.getElementById('imovelTag').textContent = im.tag[currentLang];
+      document.getElementById('imovelLoc').textContent = im.loc[currentLang];
+      document.getElementById('imovelName').innerHTML = im.name[currentLang];
+      document.getElementById('imovelPrice').innerHTML = `${im.price} <span>${im.priceLabel[currentLang]}</span>`;
+      document.getElementById('spec1').textContent = im.s1;
+      document.getElementById('spec2').textContent = im.s2;
+      document.getElementById('spec3').textContent = im.s3;
+
+      // Reset chat msgs with new intro
+      document.getElementById('chatMsgs').innerHTML = `<div class="cmsg bot">${im.intro[currentLang]}<div class="cmsg-t">agora</div></div>`;
+      setOpts([
+        [translations[currentLang]['opt-price'],'preco'],
+        [translations[currentLang]['opt-size'],'metragem'],
+        [translations[currentLang]['opt-loc'],'localizacao'],
+        [translations[currentLang]['opt-visit'],'visita']
+      ]);
+
+      // Update tab content
+      const activeTab = document.querySelector('.itab.active');
+      if(activeTab) {
+        if(activeTab.textContent.includes('Descrição') || activeTab.textContent.includes('Descripción')) switchTab('desc', activeTab);
+        else if(activeTab.textContent.includes('Detalhes') || activeTab.textContent.includes('Detalles')) switchTab('detalhes', activeTab);
+        else switchTab('local', activeTab);
+      }
+    }
+
+    function switchImovel(idx, btn) {
+      currentImovel = idx;
+      updatePropertyUI();
+
+      // Reset video
+      document.getElementById('videoEmbed').style.display = 'none';
+      document.getElementById('playBtn').style.display = 'flex';
+
+      if(btn) {
+        document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+
+      document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'});
+    }
+
+    function playVideo() {
+      // Uses a beautiful architectural video from YouTube
+      const videoIds = ['dQw4w9WgXcQ','dQw4w9WgXcQ','dQw4w9WgXcQ'];
+      // In production, replace with actual property tour video IDs
+      document.getElementById('ytFrame').src = `https://www.youtube.com/embed/jNQXAC9IVRw?autoplay=1&mute=1&controls=1`;
+      document.getElementById('videoEmbed').style.display = 'block';
+      document.getElementById('playBtn').style.display = 'none';
+      addBot(translations[currentLang]['tour-start']);
+    }
+
+    function addBot(text) {
+      const el = document.getElementById('chatMsgs');
+      const d = document.createElement('div');
+      d.className = 'cmsg bot';
+      d.innerHTML = text.replace(/\n/g,'<br/>') + `<div class="cmsg-t">${translations[currentLang]['now']}</div>`;
+      el.appendChild(d); el.scrollTop = el.scrollHeight;
+    }
+    function addUser(text) {
+      const el = document.getElementById('chatMsgs');
+      const d = document.createElement('div');
+      d.className = 'cmsg user';
+      d.innerHTML = text + `<div class="cmsg-t">${translations[currentLang]['now']}</div>`;
+      el.appendChild(d); el.scrollTop = el.scrollHeight;
+    }
+    function setOpts(opts) {
+      document.getElementById('chatOpts').innerHTML = opts.map(o=>`<button class="copt" onclick="ask('${o[1]}')">${o[0]}</button>`).join('');
+    }
+
+    function ask(key) {
+      const im = imoveis[currentImovel];
+      const resp = im.qa[currentLang][key];
+      if(!resp) return;
+      addBot(resp);
+      if(key === 'visita') {
+        awaitingName = true;
+        setOpts([]);
+      } else {
+        setOpts([
+          [translations[currentLang]['opt-price'],'preco'],
+          [translations[currentLang]['opt-size'],'metragem'],
+          [translations[currentLang]['opt-loc'],'localizacao'],
+          [translations[currentLang]['opt-visit'],'visita']
+        ]);
+      }
+    }
+
+    function sendMsg() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if(!text) return;
+      input.value = '';
+      addUser(text);
+      setTimeout(() => {
+        if(awaitingName) {
+          addBot(translations[currentLang]['visit-confirm'].replace('!', ` ${text.split(' ')[0]}!`));
+          setOpts([
+            [translations[currentLang]['opt-price'],'preco'],
+            [translations[currentLang]['opt-size'],'metragem'],
+            [translations[currentLang]['opt-loc'],'localizacao']
+          ]);
+          awaitingName = false;
+        } else {
+          const im = imoveis[currentImovel];
+          const resps = currentLang === 'es' ? [
+            `Sobre esta propiedad: ${im.name.es.replace('<br/>',' ')} en ${im.loc.es.replace('📍 ','')}. ¡Puedo contarle sobre el valor, metraje, ubicación o agendar una visita!`,
+            `¡Buena pregunta! Este inmueble tiene características únicas. ¿Quiere que detalle algún aspecto específico?`,
+            `Para información más detallada, puedo conectarle con uno de nuestros corredores. ¿Quiere agendar una charla?`
+          ] : [
+            `Sobre esta propriedade: ${im.name.pt.replace('<br/>',' ')} em ${im.loc.pt.replace('📍 ','')}. Posso te contar sobre o valor, metragem, localização ou agendar uma visita!`,
+            `Ótima pergunta! Este imóvel tem características únicas. Quer que eu detalhe algum aspecto específico?`,
+            `Para informações mais detalhadas, posso conectar você com um de nossos corretores especializados. Quer agendar uma conversa?`
+          ];
+          addBot(resps[Math.floor(Math.random()*resps.length)]);
+          setOpts([
+            [translations[currentLang]['opt-price'],'preco'],
+            [translations[currentLang]['opt-size'],'metragem'],
+            [translations[currentLang]['opt-loc'],'localizacao'],
+            [translations[currentLang]['opt-visit'],'visita']
+          ]);
+        }
+      }, 700);
+    }
+
+    // Agency Chat Logic
+    function updateAgencyChatUI() {
+      // Re-render agency options and welcome msg if empty or reset
+      document.getElementById('agencyMsgs').innerHTML = `<div class="amsg bot">${translations[currentLang]['agency-welcome']}</div>`;
+      document.querySelector('.agency-chat .chat-opts').innerHTML = `
+        <button class="copt" onclick="agencyAsk('vender')">${translations[currentLang]['opt-vender']}</button>
+        <button class="copt" onclick="agencyAsk('alugar')">${translations[currentLang]['opt-alugar']}</button>
+        <button class="copt" onclick="agencyAsk('human')">${translations[currentLang]['opt-human']}</button>
+      `;
+    }
+
+    function toggleAgencyChat() {
+      const chat = document.getElementById('agencyChat');
+      const btn = document.getElementById('agencyBtn');
+      chat.classList.toggle('open');
+      if(chat.classList.contains('open')) {
+        btn.style.opacity = '0';
+        btn.style.pointerEvents = 'none';
+      } else {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'all';
+      }
+    }
+
+    function addAgencyBot(text) {
+      const el = document.getElementById('agencyMsgs');
+      const d = document.createElement('div');
+      d.className = 'amsg bot';
+      d.innerHTML = text.replace(/\n/g,'<br/>');
+      el.appendChild(d); el.scrollTop = el.scrollHeight;
+    }
+
+    function addAgencyUser(text) {
+      const el = document.getElementById('agencyMsgs');
+      const d = document.createElement('div');
+      d.className = 'amsg user';
+      d.innerHTML = text;
+      el.appendChild(d); el.scrollTop = el.scrollHeight;
+    }
+
+    function agencyAsk(key) {
+      const responses = {
+        vender: translations[currentLang]['agency-resp-vender'],
+        alugar: translations[currentLang]['agency-resp-alugar'],
+        human: translations[currentLang]['agency-resp-human']
+      };
+      addAgencyBot(responses[key]);
+    }
+
+    function sendAgencyMsg() {
+      const input = document.getElementById('agencyInput');
+      const text = input.value.trim();
+      if(!text) return;
+      input.value = '';
+      addAgencyUser(text);
+      setTimeout(() => {
+        addAgencyBot(translations[currentLang]['agency-resp-default']);
+      }, 800);
+    }
+
+    // Initialize in Spanish
+    document.addEventListener('DOMContentLoaded', () => setLanguage('es'));
+  </script>
+</body>
+</html>
