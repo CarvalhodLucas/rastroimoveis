@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Rastro Imóveis — Encontre onde viver</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,12 +51,23 @@
       padding: 18px 56px;
     }
     .nav-logo {
+      display: flex; align-items: center; gap: 12px;
       font-family: var(--font-display);
       font-size: 1.6rem; color: var(--white);
       text-decoration: none; letter-spacing: 0.04em;
-      transition: color 0.4s;
+      transition: all 0.4s;
+    }
+    .nav-logo img {
+      height: 38px; width: 38px;
+      object-fit: cover; border-radius: 8px;
+      transition: all 0.4s;
+      mix-blend-mode: multiply;
     }
     nav.scrolled .nav-logo { color: var(--ink); }
+    nav:not(.scrolled) .nav-logo img {
+      filter: invert(1) hue-rotate(180deg) brightness(1.2);
+      mix-blend-mode: normal;
+    }
     .nav-center { display: flex; gap: 40px; list-style: none; }
     .nav-center a {
       font-size: 0.78rem; font-weight: 400;
@@ -96,7 +108,7 @@
     }
     .nav-cta:hover { background: var(--stone); }
 
-    /* HERO — full screen editorial */
+    /* HERO â€” full screen editorial */
     .hero {
       height: 100vh; position: relative;
       display: flex; align-items: flex-end;
@@ -209,7 +221,7 @@
       to{opacity:1;transform:translateY(0)}
     }
 
-    /* IMOVEIS — cinematic layout */
+    /* IMOVEIS â€” cinematic layout */
     .imoveis-section {
       background: var(--cream);
       padding: 120px 0 0;
@@ -237,7 +249,7 @@
       background: var(--ink); color: var(--cream); border-color: var(--ink);
     }
 
-    /* Imóvel featured — full width cinematic */
+    /* ImÃ³vel featured â€” full width cinematic */
     .imovel-featured {
       position: relative; cursor: pointer;
       overflow: hidden;
@@ -458,7 +470,7 @@
     }
     .imovel-row:last-child { border-bottom: 1px solid var(--border); }
     .imovel-row::after {
-      content: '→';
+      content: 'â†’';
       position: absolute; right: 0;
       font-size: 1.2rem; color: var(--sand);
       opacity: 0; transition: all 0.3s;
@@ -734,40 +746,43 @@
 
   <button class="float-btn" id="agencyBtn" onclick="toggleAgencyChat()">
     <span class="online-dot"></span>
-    Falar com a imobiliária
+    Falar com a imobiliÃ¡ria
   </button>
 
   <div class="agency-chat" id="agencyChat">
     <div class="agency-chat-head">
       <div class="agency-chat-info">
-        <div class="agency-chat-avatar">🏢</div>
+        <div class="agency-chat-avatar">ðŸ¢</div>
         <div>
-          <div class="agency-chat-name" data-i18n="agency-name">Rastro Imóveis</div>
+          <div class="agency-chat-name" data-i18n="agency-name">Rastro ImÃ³veis</div>
           <div class="agency-chat-status" data-i18n="agency-status">Online agora</div>
         </div>
       </div>
-      <button class="agency-chat-close" onclick="toggleAgencyChat()">✕</button>
+      <button class="agency-chat-close" onclick="toggleAgencyChat()">âœ•</button>
     </div>
     <div class="agency-messages" id="agencyMsgs">
       <div class="amsg bot">
-        Olá! Seja bem-vindo à <strong>Rastro Imóveis</strong>. 🏢<br/><br/>
-        Como podemos ajudar você hoje? Estamos prontos para encontrar seu novo lar ou tirar dúvidas sobre nossa imobiliária.
+        OlÃ¡! Seja bem-vindo Ã  <strong>Rastro ImÃ³veis</strong>. ðŸ¢<br/><br/>
+        Como podemos ajudar vocÃª hoje? Estamos prontos para encontrar seu novo lar ou tirar dÃºvidas sobre nossa imobiliÃ¡ria.
       </div>
     </div>
     <div class="chat-opts" style="padding: 0 24px 12px;">
-      <button class="copt" onclick="agencyAsk('vender')">🏷️ Quero vender</button>
-      <button class="copt" onclick="agencyAsk('alugar')">🔑 Quero alugar</button>
-      <button class="copt" onclick="agencyAsk('human')">👤 Falar com corretor</button>
+      <button class="copt" onclick="agencyAsk('vender')">ðŸ·ï¸ Quero vender</button>
+      <button class="copt" onclick="agencyAsk('alugar')">ðŸ”‘ Quero alugar</button>
+      <button class="copt" onclick="agencyAsk('human')">ðŸ‘¤ Falar com corretor</button>
     </div>
     <div class="agency-input-area">
       <input class="ainput" id="agencyInput" placeholder="Sua mensagem..." onkeydown="if(event.key==='Enter')sendAgencyMsg()"/>
-      <button class="asend" onclick="sendAgencyMsg()">➤</button>
+      <button class="asend" onclick="sendAgencyMsg()">âž¤</button>
     </div>
   </div>
 
   <!-- NAV -->
   <nav id="nav">
-    <a href="#" class="nav-logo">Rastro Imóveis</a>
+    <a href="#" class="nav-logo">
+      <img src="logo.png" alt="RI">
+      Rastro ImÃ³veis
+    </a>
     <ul class="nav-center">
       <li><a href="#imoveis" data-i18n="nav-comprar">Comprar</a></li>
       <li><a href="#imoveis" data-i18n="nav-alugar">Alugar</a></li>
@@ -780,7 +795,7 @@
         <span id="lang-pt" onclick="setLanguage('pt')">PT</span>
       </div>
       <a href="tel:+5511900000000" class="nav-tag">+55 11 9000-0000</a>
-      <a href="#imoveis" class="nav-cta" data-i18n="nav-cta">Ver imóveis</a>
+      <a href="#imoveis" class="nav-cta" data-i18n="nav-cta">Ver imÃ³veis</a>
     </div>
   </nav>
 
@@ -791,13 +806,13 @@
     <div class="hero-number">R</div>
     <div class="hero-content">
       <div class="hero-left">
-        <div class="hero-eyebrow" data-i18n="hero-eyebrow">Imobiliária premium</div>
+        <div class="hero-eyebrow" data-i18n="hero-eyebrow">ImobiliÃ¡ria premium</div>
         <h1 data-i18n-html="hero-title">Encontre<br/>onde<br/><em>viver</em></h1>
       </div>
       <div class="hero-right">
-        <p class="hero-sub" data-i18n="hero-sub">Curadoria exclusiva de imóveis para compra e aluguel — com assistente virtual que conhece cada detalhe de cada propriedade.</p>
+        <p class="hero-sub" data-i18n="hero-sub">Curadoria exclusiva de imÃ³veis para compra e aluguel â€” com assistente virtual que conhece cada detalhe de cada propriedade.</p>
         <div class="hero-actions">
-          <button class="btn-sand" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="hero-btn-view">Ver imóveis →</button>
+          <button class="btn-sand" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="hero-btn-view">Ver imÃ³veis â†’</button>
           <button class="btn-ghost-sand" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="hero-btn-chat">Falar com assistente</button>
         </div>
       </div>
@@ -812,7 +827,7 @@
   <div class="imoveis-section">
     <div class="imoveis-header reveal">
       <div>
-        <div class="imoveis-title" data-i18n-html="featured-title">Imóvel em<br/><em>destaque</em></div>
+        <div class="imoveis-title" data-i18n-html="featured-title">ImÃ³vel em<br/><em>destaque</em></div>
       </div>
       <div class="imoveis-filters">
         <button class="filter-btn active" onclick="switchImovel(0,this)" data-i18n="filter-cobertura">Cobertura</button>
@@ -821,7 +836,7 @@
       </div>
     </div>
 
-    <!-- Featured imovel — video + chat -->
+    <!-- Featured imovel â€” video + chat -->
     <div class="imovel-featured">
       <div class="imovel-featured-inner">
 
@@ -836,7 +851,7 @@
             <div id="videoEmbed" style="position:absolute;inset:0;display:none;">
               <iframe id="ytFrame" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="display:block;"></iframe>
             </div>
-            <div class="play-btn" id="playBtn" onclick="playVideo()">▶</div>
+            <div class="play-btn" id="playBtn" onclick="playVideo()">â–¶</div>
           </div>
           <div class="imovel-media-overlay"></div>
         </div>
@@ -844,20 +859,20 @@
         <!-- Info + Chat side -->
         <div class="imovel-info-chat">
           <div class="imovel-info">
-            <div class="imovel-loc" id="imovelLoc">📍 Jardins, São Paulo — SP</div>
-            <div class="imovel-name" id="imovelName">Cobertura Duplex<br/>Vista Panorâmica</div>
+            <div class="imovel-loc" id="imovelLoc">ðŸ“ Jardins, SÃ£o Paulo â€” SP</div>
+            <div class="imovel-name" id="imovelName">Cobertura Duplex<br/>Vista PanorÃ¢mica</div>
             <div class="imovel-price" id="imovelPrice">R$ 4.200.000 <span>/ venda</span></div>
             <div class="imovel-specs">
-              <div class="spec"><div class="spec-val" id="spec1">320m²</div><div class="spec-key">Área total</div></div>
+              <div class="spec"><div class="spec-val" id="spec1">320mÂ²</div><div class="spec-key">Ãrea total</div></div>
               <div class="spec"><div class="spec-val" id="spec2">4</div><div class="spec-key">Quartos</div></div>
               <div class="spec"><div class="spec-val" id="spec3">3</div><div class="spec-key">Vagas</div></div>
             </div>
             <div class="imovel-tabs">
-              <button class="itab active" onclick="switchTab('desc',this)" data-i18n="tab-desc">Descrição</button>
+              <button class="itab active" onclick="switchTab('desc',this)" data-i18n="tab-desc">DescriÃ§Ã£o</button>
               <button class="itab" onclick="switchTab('detalhes',this)" data-i18n="tab-detalhes">Detalhes</button>
-              <button class="itab" onclick="switchTab('local',this)" data-i18n="tab-local">Localização</button>
+              <button class="itab" onclick="switchTab('local',this)" data-i18n="tab-local">LocalizaÃ§Ã£o</button>
             </div>
-            <div class="imovel-desc" id="tabContent">Cobertura duplex de alto padrão com terraço privativo e vista 360° para a cidade. Acabamentos nobres, cozinha gourmet integrada, home theater e piscina privativa no terraço superior.</div>
+            <div class="imovel-desc" id="tabContent">Cobertura duplex de alto padrÃ£o com terraÃ§o privativo e vista 360Â° para a cidade. Acabamentos nobres, cozinha gourmet integrada, home theater e piscina privativa no terraÃ§o superior.</div>
           </div>
 
           <!-- Chat -->
@@ -865,26 +880,26 @@
             <div class="chat-panel-head">
               <div class="chat-panel-title">
                 <span class="online-dot"></span>
-                <span data-i18n="chat-property-title">Assistente do imóvel</span>
+                <span data-i18n="chat-property-title">Assistente do imÃ³vel</span>
               </div>
-              <div class="chat-panel-lang" data-i18n="chat-property-sub">Pergunte sobre este imóvel</div>
+              <div class="chat-panel-lang" data-i18n="chat-property-sub">Pergunte sobre este imÃ³vel</div>
             </div>
             <div class="chat-messages" id="chatMsgs">
               <div class="cmsg bot">
-                Olá! 👋 Sou o assistente da <strong>Cobertura Duplex nos Jardins</strong>.<br/><br/>
-                Conheço cada detalhe deste imóvel. O que gostaria de saber?
+                OlÃ¡! ðŸ‘‹ Sou o assistente da <strong>Cobertura Duplex nos Jardins</strong>.<br/><br/>
+                ConheÃ§o cada detalhe deste imÃ³vel. O que gostaria de saber?
                 <div class="cmsg-t">agora</div>
               </div>
             </div>
             <div class="chat-opts" id="chatOpts">
-              <button class="copt" onclick="ask('preco')">💰 Valor e condições</button>
-              <button class="copt" onclick="ask('metragem')">📐 Metragem</button>
-              <button class="copt" onclick="ask('localizacao')">📍 Localização</button>
-              <button class="copt" onclick="ask('visita')">📅 Agendar visita</button>
+              <button class="copt" onclick="ask('preco')">ðŸ’° Valor e condiÃ§Ãµes</button>
+              <button class="copt" onclick="ask('metragem')">ðŸ“ Metragem</button>
+              <button class="copt" onclick="ask('localizacao')">ðŸ“ LocalizaÃ§Ã£o</button>
+              <button class="copt" onclick="ask('visita')">ðŸ“… Agendar visita</button>
             </div>
             <div class="chat-input-row">
-              <input class="cinput" id="chatInput" placeholder="Faça uma pergunta sobre este imóvel..." onkeydown="if(event.key==='Enter')sendMsg()"/>
-              <button class="csend" onclick="sendMsg()">➤</button>
+              <input class="cinput" id="chatInput" placeholder="FaÃ§a uma pergunta sobre este imÃ³vel..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+              <button class="csend" onclick="sendMsg()">âž¤</button>
             </div>
           </div>
         </div>
@@ -895,17 +910,17 @@
   <!-- GRID DE IMOVEIS -->
   <div class="imoveis-grid-section" id="imoveis">
     <div class="grid-header reveal">
-      <div class="grid-title" data-i18n-html="grid-title">Outros<br/><em>imóveis</em></div>
-      <div class="grid-count" data-i18n="grid-count">12 imóveis disponíveis</div>
+      <div class="grid-title" data-i18n-html="grid-title">Outros<br/><em>imÃ³veis</em></div>
+      <div class="grid-count" data-i18n="grid-count">12 imÃ³veis disponÃ­veis</div>
     </div>
     <div class="imoveis-list">
       <div class="imovel-row reveal" onclick="switchImovel(1,null)">
-        <div class="row-thumb">🏢</div>
+        <div class="row-thumb">ðŸ¢</div>
         <div class="row-info">
-          <div class="row-name">Apartamento Alto Padrão</div>
-          <div class="row-loc">Pinheiros, São Paulo — SP</div>
+          <div class="row-name">Apartamento Alto PadrÃ£o</div>
+          <div class="row-loc">Pinheiros, SÃ£o Paulo â€” SP</div>
           <div class="row-specs">
-            <div class="row-spec"><strong>180m²</strong> área</div>
+            <div class="row-spec"><strong>180mÂ²</strong> Ã¡rea</div>
             <div class="row-spec"><strong>3</strong> quartos</div>
             <div class="row-spec"><strong>2</strong> vagas</div>
           </div>
@@ -916,12 +931,12 @@
         </div>
       </div>
       <div class="imovel-row reveal" onclick="switchImovel(2,null)">
-        <div class="row-thumb">🏡</div>
+        <div class="row-thumb">ðŸ¡</div>
         <div class="row-info">
-          <div class="row-name">Casa em Condomínio</div>
-          <div class="row-loc">Alphaville, Barueri — SP</div>
+          <div class="row-name">Casa em CondomÃ­nio</div>
+          <div class="row-loc">Alphaville, Barueri â€” SP</div>
           <div class="row-specs">
-            <div class="row-spec"><strong>420m²</strong> área</div>
+            <div class="row-spec"><strong>420mÂ²</strong> Ã¡rea</div>
             <div class="row-spec"><strong>5</strong> quartos</div>
             <div class="row-spec"><strong>4</strong> vagas</div>
           </div>
@@ -932,35 +947,35 @@
         </div>
       </div>
       <div class="imovel-row reveal">
-        <div class="row-thumb">🏠</div>
+        <div class="row-thumb">ðŸ </div>
         <div class="row-info">
           <div class="row-name">Studio Moderno</div>
-          <div class="row-loc">Vila Madalena, São Paulo — SP</div>
+          <div class="row-loc">Vila Madalena, SÃ£o Paulo â€” SP</div>
           <div class="row-specs">
-            <div class="row-spec"><strong>45m²</strong> área</div>
+            <div class="row-spec"><strong>45mÂ²</strong> Ã¡rea</div>
             <div class="row-spec"><strong>1</strong> quarto</div>
             <div class="row-spec"><strong>1</strong> vaga</div>
           </div>
         </div>
         <div class="row-price-wrap">
           <div class="row-type">Aluguel</div>
-          <div class="row-price">R$ 3.800/mês</div>
+          <div class="row-price">R$ 3.800/mÃªs</div>
         </div>
       </div>
       <div class="imovel-row reveal">
-        <div class="row-thumb">🏙️</div>
+        <div class="row-thumb">ðŸ™ï¸</div>
         <div class="row-info">
           <div class="row-name">Loft Industrial</div>
-          <div class="row-loc">Moema, São Paulo — SP</div>
+          <div class="row-loc">Moema, SÃ£o Paulo â€” SP</div>
           <div class="row-specs">
-            <div class="row-spec"><strong>95m²</strong> área</div>
+            <div class="row-spec"><strong>95mÂ²</strong> Ã¡rea</div>
             <div class="row-spec"><strong>1</strong> quarto</div>
             <div class="row-spec"><strong>1</strong> vaga</div>
           </div>
         </div>
         <div class="row-price-wrap">
           <div class="row-type">Aluguel</div>
-          <div class="row-price">R$ 6.500/mês</div>
+          <div class="row-price">R$ 6.500/mÃªs</div>
         </div>
       </div>
     </div>
@@ -969,22 +984,22 @@
   <div class="manifesto" id="manifesto">
     <div class="manifesto-text reveal">
       <div class="manifesto-label" data-i18n="manifesto-label">Nossa filosofia</div>
-      <div class="manifesto-title" data-i18n-html="manifesto-title">Mais que<br/>imóveis —<br/><em>lares</em></div>
-      <p class="manifesto-body" data-i18n="manifesto-body">Acreditamos que encontrar o imóvel certo é uma das decisões mais importantes da vida. Por isso combinamos curadoria humana com tecnologia — para que você tenha todas as informações antes de decidir.</p>
+      <div class="manifesto-title" data-i18n-html="manifesto-title">Mais que<br/>imÃ³veis â€”<br/><em>lares</em></div>
+      <p class="manifesto-body" data-i18n="manifesto-body">Acreditamos que encontrar o imÃ³vel certo Ã© uma das decisÃµes mais importantes da vida. Por isso combinamos curadoria humana com tecnologia â€” para que vocÃª tenha todas as informaÃ§Ãµes antes de decidir.</p>
     </div>
     <div class="manifesto-stats reveal">
-      <div class="mstat"><div class="mstat-num">850<span>+</span></div><div class="mstat-label" data-i18n="mstat-sold">Imóveis vendidos</div></div>
-      <div class="mstat"><div class="mstat-num">12<span data-i18n="mstat-years">anos</span></div><div class="mstat-label" data-i18n="mstat-exp">De experiência</div></div>
-      <div class="mstat"><div class="mstat-num">98<span>%</span></div><div class="mstat-label" data-i18n="mstat-sat">Satisfação</div></div>
+      <div class="mstat"><div class="mstat-num">850<span>+</span></div><div class="mstat-label" data-i18n="mstat-sold">ImÃ³veis vendidos</div></div>
+      <div class="mstat"><div class="mstat-num">12<span data-i18n="mstat-years">anos</span></div><div class="mstat-label" data-i18n="mstat-exp">De experiÃªncia</div></div>
+      <div class="mstat"><div class="mstat-num">98<span>%</span></div><div class="mstat-label" data-i18n="mstat-sat">SatisfaÃ§Ã£o</div></div>
       <div class="mstat"><div class="mstat-num">24<span data-i18n="mstat-hours">h</span></div><div class="mstat-label" data-i18n="mstat-active">Assistente ativo</div></div>
     </div>
   </div>
 
   <!-- CTA -->
   <div class="cta-strip reveal" id="contato">
-    <div class="cta-strip-text" data-i18n-html="cta-title">Encontrou o imóvel<br/><em>dos seus sonhos?</em></div>
+    <div class="cta-strip-text" data-i18n-html="cta-title">Encontrou o imÃ³vel<br/><em>dos seus sonhos?</em></div>
     <div class="cta-strip-actions">
-      <button class="btn-ink" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="cta-btn-chat">Falar com assistente →</button>
+      <button class="btn-ink" onclick="document.querySelector('.imovel-featured').scrollIntoView({behavior:'smooth'})" data-i18n="cta-btn-chat">Falar com assistente â†’</button>
       <a href="tel:+5511900000000" class="btn-outline-ink" data-i18n="cta-btn-call">Ligar agora</a>
     </div>
   </div>
@@ -993,25 +1008,25 @@
   <footer>
     <div class="footer-top">
       <div>
-        <div class="footer-logo-big">Rastro Imóveis</div>
-        <p class="footer-desc" data-i18n="footer-desc">Curadoria exclusiva de imóveis premium com assistente virtual disponível 24 horas.</p>
+        <div class="footer-logo-big">Rastro ImÃ³veis</div>
+        <p class="footer-desc" data-i18n="footer-desc">Curadoria exclusiva de imÃ³veis premium com assistente virtual disponÃ­vel 24 horas.</p>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer-h-search">Buscar</h4>
         <div class="footer-links">
           <a href="#" data-i18n="nav-comprar">Comprar</a>
           <a href="#" data-i18n="nav-alugar">Alugar</a>
-          <a href="#" data-i18n="footer-link-launch">Lançamentos</a>
-          <a href="#" data-i18n="footer-link-high">Alto padrão</a>
+          <a href="#" data-i18n="footer-link-launch">LanÃ§amentos</a>
+          <a href="#" data-i18n="footer-link-high">Alto padrÃ£o</a>
         </div>
       </div>
       <div class="footer-col">
         <h4 data-i18n="footer-h-company">Empresa</h4>
         <div class="footer-links">
-          <a href="#" data-i18n="footer-link-about">Sobre nós</a>
+          <a href="#" data-i18n="footer-link-about">Sobre nÃ³s</a>
           <a href="#" data-i18n="footer-link-agents">Corretores</a>
           <a href="#" data-i18n="footer-link-blog">Blog</a>
-          <a href="#" data-i18n="footer-link-valuation">Avalie seu imóvel</a>
+          <a href="#" data-i18n="footer-link-valuation">Avalie seu imÃ³vel</a>
         </div>
       </div>
       <div class="footer-col">
@@ -1019,13 +1034,13 @@
         <div class="footer-links">
           <a href="#">+55 11 9000-0000</a>
           <a href="#">contato@rastro.com.br</a>
-          <a href="#">São Paulo — SP</a>
-          <a href="#" data-i18n="footer-link-hours">Seg–Sex 09h–18h</a>
+          <a href="#">SÃ£o Paulo â€” SP</a>
+          <a href="#" data-i18n="footer-link-hours">Segâ€“Sex 09hâ€“18h</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 Rastro Imóveis — CRECI 000.000/SP</p>
+      <p>Â© 2025 Rastro ImÃ³veis â€” CRECI 000.000/SP</p>
       <p class="made"><span data-i18n="footer-developed">Desenvolvido por</span> <span>Rastro Studio</span></p>
     </div>
   </footer>
@@ -1069,63 +1084,63 @@
         'nav-contato': 'Contacto',
         'nav-cta': 'Ver inmuebles',
         'hero-eyebrow': 'Inmobiliaria premium',
-        'hero-title': 'Encuentra<br/>dónde<br/><em>vivir</em>',
-        'hero-sub': 'Curaduría exclusiva de inmuebles para compra y alquiler — con asistente virtual que conoce cada detalle de cada propiedad.',
-        'hero-btn-view': 'Ver inmuebles →',
+        'hero-title': 'Encuentra<br/>dÃ³nde<br/><em>vivir</em>',
+        'hero-sub': 'CuradurÃ­a exclusiva de inmuebles para compra y alquiler â€” con asistente virtual que conoce cada detalle de cada propiedad.',
+        'hero-btn-view': 'Ver inmuebles â†’',
         'hero-btn-chat': 'Hablar con asistente',
         'featured-title': 'Inmueble en<br/><em>destaque</em>',
         'filter-cobertura': 'Penthouse',
         'filter-apartamento': 'Apartamento',
         'filter-casa': 'Casa',
-        'tab-desc': 'Descripción',
+        'tab-desc': 'DescripciÃ³n',
         'tab-detalhes': 'Detalles',
-        'tab-local': 'Ubicación',
+        'tab-local': 'UbicaciÃ³n',
         'chat-property-title': 'Asistente del inmueble',
         'chat-property-sub': 'Pregunte sobre este inmueble',
         'grid-title': 'Otros<br/><em>inmuebles</em>',
         'grid-count': '12 inmuebles disponibles',
-        'manifesto-label': 'Nuestra filosofía',
-        'manifesto-title': 'Más que<br/>inmuebles —<br/><em>hogares</em>',
-        'manifesto-body': 'Creemos que encontrar el inmueble adecuado es una de las decisiones más importantes de la vida. Por eso combinamos curaduría humana con tecnología — para que tengas toda la información antes de decidir.',
+        'manifesto-label': 'Nuestra filosofÃ­a',
+        'manifesto-title': 'MÃ¡s que<br/>inmuebles â€”<br/><em>hogares</em>',
+        'manifesto-body': 'Creemos que encontrar el inmueble adecuado es una de las decisiones mÃ¡s importantes de la vida. Por eso combinamos curadurÃ­a humana con tecnologÃ­a â€” para que tengas toda la informaciÃ³n antes de decidir.',
         'mstat-sold': 'Inmuebles vendidos',
-        'mstat-years': 'años',
+        'mstat-years': 'aÃ±os',
         'mstat-exp': 'De experiencia',
-        'mstat-sat': 'Satisfacción',
+        'mstat-sat': 'SatisfacciÃ³n',
         'mstat-hours': 'h',
         'mstat-active': 'Asistente activo',
-        'cta-title': '¿Encontró el inmueble<br/><em>de sus sueños?</em>',
-        'cta-btn-chat': 'Hablar con asistente →',
+        'cta-title': 'Â¿EncontrÃ³ el inmueble<br/><em>de sus sueÃ±os?</em>',
+        'cta-btn-chat': 'Hablar con asistente â†’',
         'cta-btn-call': 'Llamar ahora',
-        'footer-desc': 'Curaduría exclusiva de inmuebles premium con asistente virtual disponible 24 horas.',
+        'footer-desc': 'CuradurÃ­a exclusiva de inmuebles premium con asistente virtual disponible 24 horas.',
         'footer-h-search': 'Buscar',
         'footer-link-launch': 'Lanzamientos',
-        'footer-link-high': 'Alto estándar',
+        'footer-link-high': 'Alto estÃ¡ndar',
         'footer-h-company': 'Empresa',
         'footer-link-about': 'Sobre nosotros',
         'footer-link-agents': 'Corredores',
         'footer-link-blog': 'Blog',
-        'footer-link-valuation': 'Evalúe su inmueble',
+        'footer-link-valuation': 'EvalÃºe su inmueble',
         'footer-h-contact': 'Contacto',
-        'footer-link-hours': 'Lun–Vie 09h–18h',
+        'footer-link-hours': 'Lunâ€“Vie 09hâ€“18h',
         'footer-developed': 'Desarrollado por',
         'agency-name': 'Rastro Inmuebles',
-        'agency-status': 'En línea ahora',
-        'agency-welcome': '¡Hola! Bienvenido a <strong>Rastro Inmuebles</strong>. 🏢<br/><br/>¿Cómo podemos ayudarle hoy? Estamos listos para encontrar su nuevo hogar.',
-        'opt-vender': '🏷️ Quiero vender',
-        'opt-alugar': '🔑 Quiero alquilar',
-        'opt-human': '👤 Hablar con corredor',
+        'agency-status': 'En lÃ­nea ahora',
+        'agency-welcome': 'Â¡Hola! Bienvenido a <strong>Rastro Inmuebles</strong>. ðŸ¢<br/><br/>Â¿CÃ³mo podemos ayudarle hoy? Estamos listos para encontrar su nuevo hogar.',
+        'opt-vender': 'ðŸ·ï¸ Quiero vender',
+        'opt-alugar': 'ðŸ”‘ Quiero alquilar',
+        'opt-human': 'ðŸ‘¤ Hablar con corredor',
         'chat-input-placeholder': 'Haga una pregunta sobre este inmueble...',
         'agency-input-placeholder': 'Su mensaje...',
-        'agency-resp-vender': '¡Excelente! Para vender su inmueble con nosotros, necesitamos información básica. ¿Le gustaría agendar una evaluación gratuita?',
-        'agency-resp-alugar': 'Tenemos una amplia curaduría de inmuebles para alquilar. ¿Qué región le interesa en este momento?',
-        'agency-resp-human': 'Entendido. Le estoy conectando con uno de nuestros corredores. Por favor, espere un momento... ⏳',
-        'agency-resp-default': '¡Gracias por su mensaje! Hemos recibido su solicitud y un consultor se pondrá en contacto pronto.',
-        'tour-start': '🎥 ¡Tour en video iniciado! Observe los espacios mientras resuelvo sus dudas. ¿Qué desea saber?',
-        'visit-confirm': '¡Perfecto! ✅<br/><br/>Visita agendada. Un corredor se pondrá en contacto en hasta 2 horas.<br/><br/>¿Alguna otra duda?',
-        'opt-price': '💰 Valor y condiciones',
-        'opt-size': '📐 Metraje',
-        'opt-loc': '📍 Ubicación',
-        'opt-visit': '📅 Agendar visita',
+        'agency-resp-vender': 'Â¡Excelente! Para vender su inmueble con nosotros, necesitamos informaciÃ³n bÃ¡sica. Â¿Le gustarÃ­a agendar una evaluaciÃ³n gratuita?',
+        'agency-resp-alugar': 'Tenemos una amplia curadurÃ­a de inmuebles para alquilar. Â¿QuÃ© regiÃ³n le interesa en este momento?',
+        'agency-resp-human': 'Entendido. Le estoy conectando con uno de nuestros corredores. Por favor, espere un momento... â³',
+        'agency-resp-default': 'Â¡Gracias por su mensaje! Hemos recibido su solicitud y un consultor se pondrÃ¡ en contacto pronto.',
+        'tour-start': 'ðŸŽ¥ Â¡Tour en video iniciado! Observe los espacios mientras resuelvo sus dudas. Â¿QuÃ© desea saber?',
+        'visit-confirm': 'Â¡Perfecto! âœ…<br/><br/>Visita agendada. Un corredor se pondrÃ¡ en contacto en hasta 2 horas.<br/><br/>Â¿Alguna otra duda?',
+        'opt-price': 'ðŸ’° Valor y condiciones',
+        'opt-size': 'ðŸ“ Metraje',
+        'opt-loc': 'ðŸ“ UbicaciÃ³n',
+        'opt-visit': 'ðŸ“… Agendar visita',
         'now': 'ahora'
       },
       pt: {
@@ -1133,65 +1148,65 @@
         'nav-alugar': 'Alugar',
         'nav-sobre': 'Sobre',
         'nav-contato': 'Contato',
-        'nav-cta': 'Ver imóveis',
-        'hero-eyebrow': 'Imobiliária premium',
+        'nav-cta': 'Ver imÃ³veis',
+        'hero-eyebrow': 'ImobiliÃ¡ria premium',
         'hero-title': 'Encontre<br/>onde<br/><em>viver</em>',
-        'hero-sub': 'Curadoria exclusiva de imóveis para compra e aluguel — com assistente virtual que conhece cada detalhe de cada propriedade.',
-        'hero-btn-view': 'Ver imóveis →',
+        'hero-sub': 'Curadoria exclusiva de imÃ³veis para compra e aluguel â€” com assistente virtual que conhece cada detalhe de cada propriedade.',
+        'hero-btn-view': 'Ver imÃ³veis â†’',
         'hero-btn-chat': 'Falar com assistente',
-        'featured-title': 'Imóvel em<br/><em>destaque</em>',
+        'featured-title': 'ImÃ³vel em<br/><em>destaque</em>',
         'filter-cobertura': 'Cobertura',
         'filter-apartamento': 'Apartamento',
         'filter-casa': 'Casa',
-        'tab-desc': 'Descrição',
+        'tab-desc': 'DescriÃ§Ã£o',
         'tab-detalhes': 'Detalhes',
-        'tab-local': 'Localização',
-        'chat-property-title': 'Assistente do imóvel',
-        'chat-property-sub': 'Pergunte sobre este imóvel',
-        'grid-title': 'Outros<br/><em>imóveis</em>',
-        'grid-count': '12 imóveis disponíveis',
+        'tab-local': 'LocalizaÃ§Ã£o',
+        'chat-property-title': 'Assistente do imÃ³vel',
+        'chat-property-sub': 'Pergunte sobre este imÃ³vel',
+        'grid-title': 'Outros<br/><em>imÃ³veis</em>',
+        'grid-count': '12 imÃ³veis disponÃ­veis',
         'manifesto-label': 'Nossa filosofia',
-        'manifesto-title': 'Mais que<br/>imóveis —<br/><em>lares</em>',
-        'manifesto-body': 'Acreditamos que encontrar o imóvel certo é uma das decisões mais importantes da vida. Por isso combinamos curadoria humana com tecnologia — para que você tenha todas as informações antes de decidir.',
-        'mstat-sold': 'Imóveis vendidos',
+        'manifesto-title': 'Mais que<br/>imÃ³veis â€”<br/><em>lares</em>',
+        'manifesto-body': 'Acreditamos que encontrar o imÃ³vel certo Ã© uma das decisÃµes mais importantes da vida. Por isso combinamos curadoria humana com tecnologia â€” para que vocÃª tenha todas as informaÃ§Ãµes antes de decidir.',
+        'mstat-sold': 'ImÃ³veis vendidos',
         'mstat-years': 'anos',
-        'mstat-exp': 'De experiência',
-        'mstat-sat': 'Satisfação',
+        'mstat-exp': 'De experiÃªncia',
+        'mstat-sat': 'SatisfaÃ§Ã£o',
         'mstat-hours': 'h',
         'mstat-active': 'Assistente ativo',
-        'cta-title': 'Encontrou o imóvel<br/><em>dos seus sonhos?</em>',
-        'cta-btn-chat': 'Falar com assistente →',
+        'cta-title': 'Encontrou o imÃ³vel<br/><em>dos seus sonhos?</em>',
+        'cta-btn-chat': 'Falar com assistente â†’',
         'cta-btn-call': 'Ligar agora',
-        'footer-desc': 'Curadoria exclusiva de imóveis premium com assistente virtual disponível 24 horas.',
+        'footer-desc': 'Curadoria exclusiva de imÃ³veis premium com assistente virtual disponÃ­vel 24 horas.',
         'footer-h-search': 'Buscar',
-        'footer-link-launch': 'Lançamentos',
-        'footer-link-high': 'Alto padrão',
+        'footer-link-launch': 'LanÃ§amentos',
+        'footer-link-high': 'Alto padrÃ£o',
         'footer-h-company': 'Empresa',
-        'footer-link-about': 'Sobre nós',
+        'footer-link-about': 'Sobre nÃ³s',
         'footer-link-agents': 'Corretores',
         'footer-link-blog': 'Blog',
-        'footer-link-valuation': 'Avalie seu imóvel',
+        'footer-link-valuation': 'Avalie seu imÃ³vel',
         'footer-h-contact': 'Contato',
-        'footer-link-hours': 'Seg–Sex 09h–18h',
+        'footer-link-hours': 'Segâ€“Sex 09hâ€“18h',
         'footer-developed': 'Desenvolvido por',
-        'agency-name': 'Rastro Imóveis',
+        'agency-name': 'Rastro ImÃ³veis',
         'agency-status': 'Online agora',
-        'agency-welcome': 'Olá! Seja bem-vindo à <strong>Rastro Imóveis</strong>. 🏢<br/><br/>Como podemos ajudar você hoje? Estamos prontos para encontrar seu novo lar.',
-        'opt-vender': '🏷️ Quero vender',
-        'opt-alugar': '🔑 Quero alugar',
-        'opt-human': '👤 Falar com corretor',
-        'chat-input-placeholder': 'Faça uma pergunta sobre este imóvel...',
+        'agency-welcome': 'OlÃ¡! Seja bem-vindo Ã  <strong>Rastro ImÃ³veis</strong>. ðŸ¢<br/><br/>Como podemos ajudar vocÃª hoje? Estamos prontos para encontrar seu novo lar.',
+        'opt-vender': 'ðŸ·ï¸ Quero vender',
+        'opt-alugar': 'ðŸ”‘ Quero alugar',
+        'opt-human': 'ðŸ‘¤ Falar com corretor',
+        'chat-input-placeholder': 'FaÃ§a uma pergunta sobre este imÃ³vel...',
         'agency-input-placeholder': 'Sua mensagem...',
-        'agency-resp-vender': 'Excelente! Para vender seu imóvel conosco, precisamos de algumas informações básicas. Gostaria de agendar uma avaliação gratuita?',
-        'agency-resp-alugar': 'Temos uma vasta curadoria de imóveis para alugar. Qual região você tem interesse no momento?',
-        'agency-resp-human': 'Entendido. Estou conectando você com um de nossos corretores. Por favor, aguarde um momento... ⏳',
-        'agency-resp-default': 'Obrigado por sua mensagem! Recebemos sua solicitação e um consultor entrará em contato em breve.',
-        'tour-start': '🎥 Tour em vídeo iniciado! Observe os espaços enquanto tiro suas dúvidas. O que gostaria de saber?',
-        'visit-confirm': 'Perfeito! ✅<br/><br/>Visita agendada. Um corretor entrará em contato em até 2 horas.<br/><br/>Alguma outra dúvida?',
-        'opt-price': '💰 Valor e condições',
-        'opt-size': '📐 Metragem',
-        'opt-loc': '📍 Localização',
-        'opt-visit': '📅 Agendar visita',
+        'agency-resp-vender': 'Excelente! Para vender seu imÃ³vel conosco, precisamos de algumas informaÃ§Ãµes bÃ¡sicas. Gostaria de agendar uma avaliaÃ§Ã£o gratuita?',
+        'agency-resp-alugar': 'Temos uma vasta curadoria de imÃ³veis para alugar. Qual regiÃ£o vocÃª tem interesse no momento?',
+        'agency-resp-human': 'Entendido. Estou conectando vocÃª com um de nossos corretores. Por favor, aguarde um momento... â³',
+        'agency-resp-default': 'Obrigado por sua mensagem! Recebemos sua solicitaÃ§Ã£o e um consultor entrarÃ¡ em contato em breve.',
+        'tour-start': 'ðŸŽ¥ Tour em vÃ­deo iniciado! Observe os espaÃ§os enquanto tiro suas dÃºvidas. O que gostaria de saber?',
+        'visit-confirm': 'Perfeito! âœ…<br/><br/>Visita agendada. Um corretor entrarÃ¡ em contato em atÃ© 2 horas.<br/><br/>Alguma outra dÃºvida?',
+        'opt-price': 'ðŸ’° Valor e condiÃ§Ãµes',
+        'opt-size': 'ðŸ“ Metragem',
+        'opt-loc': 'ðŸ“ LocalizaÃ§Ã£o',
+        'opt-visit': 'ðŸ“… Agendar visita',
         'now': 'agora'
       }
     };
@@ -1224,14 +1239,14 @@
 
     const tabContent = {
       es: {
-        desc: 'Penthouse dúplex de alto estándar con terraza privada y vista 360° de la ciudad. Acabados nobles, cocina gourmet integrada, home theater y piscina privada.',
-        detalhes: '4 suites · 3 plazas · 320m² útiles · Techo de 3,2m · Aire acondicionado central · Automatización · Portería 24h · 2 ascensores privados',
-        local: 'Jardins, São Paulo — a 400m del Parque Trianon. Bairro noble con fácil acceso al metro y los mejores restaurantes de la ciudad.'
+        desc: 'Penthouse dÃºplex de alto estÃ¡ndar con terraza privada y vista 360Â° de la ciudad. Acabados nobles, cocina gourmet integrada, home theater y piscina privada.',
+        detalhes: '4 suites Â· 3 plazas Â· 320mÂ² Ãºtiles Â· Techo de 3,2m Â· Aire acondicionado central Â· AutomatizaciÃ³n Â· PorterÃ­a 24h Â· 2 ascensores privados',
+        local: 'Jardins, SÃ£o Paulo â€” a 400m del Parque Trianon. Bairro noble con fÃ¡cil acceso al metro y los mejores restaurantes de la ciudad.'
       },
       pt: {
-        desc: 'Cobertura duplex de alto padrão com terraço privativo e vista 360° para a cidade. Acabamentos nobres, cozinha gourmet integrada, home theater e piscina privativa no terraço superior.',
-        detalhes: '4 suítes · 3 vagas · 320m² úteis · Pé direito 3,2m · Ar-condicionado central · Automação residencial · Portaria 24h · 2 elevadores privativos',
-        local: 'Jardins, São Paulo — a 400m do Parque Trianon, próximo à Av. Paulista. Fácil acesso ao metrô Trianon-Masp. Cercado pelos melhores restaurantes e lojas da cidade.'
+        desc: 'Cobertura duplex de alto padrÃ£o com terraÃ§o privativo e vista 360Â° para a cidade. Acabamentos nobres, cozinha gourmet integrada, home theater e piscina privativa no terraÃ§o superior.',
+        detalhes: '4 suÃ­tes Â· 3 vagas Â· 320mÂ² Ãºteis Â· PÃ© direito 3,2m Â· Ar-condicionado central Â· AutomaÃ§Ã£o residencial Â· Portaria 24h Â· 2 elevadores privativos',
+        local: 'Jardins, SÃ£o Paulo â€” a 400m do Parque Trianon, prÃ³ximo Ã  Av. Paulista. FÃ¡cil acesso ao metrÃ´ Trianon-Masp. Cercado pelos melhores restaurantes e lojas da cidade.'
       }
     };
 
@@ -1241,82 +1256,82 @@
       document.getElementById('tabContent').textContent = tabContent[currentLang][tab];
     }
 
-    // Imóveis data
+    // ImÃ³veis data
     const imoveis = [
       {
         tag: { pt: 'VENDA', es: 'VENTA' },
-        loc: { pt: '📍 Jardins, São Paulo — SP', es: '📍 Jardines, São Paulo — SP' },
-        name: { pt: 'Cobertura Duplex<br/>Vista Panorâmica', es: 'Penthouse Dúplex<br/>Vista Panorámica' },
+        loc: { pt: 'ðŸ“ Jardins, SÃ£o Paulo â€” SP', es: 'ðŸ“ Jardines, SÃ£o Paulo â€” SP' },
+        name: { pt: 'Cobertura Duplex<br/>Vista PanorÃ¢mica', es: 'Penthouse DÃºplex<br/>Vista PanorÃ¡mica' },
         price: 'R$ 4.200.000',
         priceLabel: { pt: '/ venda', es: '/ venta' },
-        s1: '320m²', s2: '4', s3: '3',
+        s1: '320mÂ²', s2: '4', s3: '3',
         intro: {
-          pt: 'Olá! 👋 Sou o assistente da <strong>Cobertura Duplex nos Jardins</strong>.<br/><br/>Conheço cada detalhe deste imóvel. O que gostaria de saber?',
-          es: '¡Hola! 👋 Soy el asistente del <strong>Penthouse Dúplex en Jardines</strong>.<br/><br/>Conozco cada detalle de este inmueble. ¿Qué le gustaría saber?'
+          pt: 'OlÃ¡! ðŸ‘‹ Sou o assistente da <strong>Cobertura Duplex nos Jardins</strong>.<br/><br/>ConheÃ§o cada detalhe deste imÃ³vel. O que gostaria de saber?',
+          es: 'Â¡Hola! ðŸ‘‹ Soy el asistente del <strong>Penthouse DÃºplex en Jardines</strong>.<br/><br/>Conozco cada detalle de este inmueble. Â¿QuÃ© le gustarÃ­a saber?'
         },
         qa: {
           pt: {
-            preco: 'O valor de venda é <strong>R$ 4.200.000</strong>. Aceitamos financiamento bancário e permuta. Condições especiais para pagamento à vista.',
-            metragem: 'A cobertura tem <strong>320m² de área útil</strong> distribuídos em 2 andares. Terraço privativo de 80m² com piscina. Pé direito de 3,2m.',
-            localizacao: 'Localizada nos <strong>Jardins, São Paulo</strong> — a 400m do Parque Trianon. Bairro nobre com fácil acesso ao metrô.',
-            visita: 'Ótimo! Para agendar uma visita, me informe seu nome e melhor horário. Temos disponibilidade de segunda a sábado.'
+            preco: 'O valor de venda Ã© <strong>R$ 4.200.000</strong>. Aceitamos financiamento bancÃ¡rio e permuta. CondiÃ§Ãµes especiais para pagamento Ã  vista.',
+            metragem: 'A cobertura tem <strong>320mÂ² de Ã¡rea Ãºtil</strong> distribuÃ­dos em 2 andares. TerraÃ§o privativo de 80mÂ² com piscina. PÃ© direito de 3,2m.',
+            localizacao: 'Localizada nos <strong>Jardins, SÃ£o Paulo</strong> â€” a 400m do Parque Trianon. Bairro nobre com fÃ¡cil acesso ao metrÃ´.',
+            visita: 'Ã“timo! Para agendar uma visita, me informe seu nome e melhor horÃ¡rio. Temos disponibilidade de segunda a sÃ¡bado.'
           },
           es: {
             preco: 'El valor de venta es <strong>R$ 4.200.000</strong>. Aceptamos financiamiento bancario y permuta. Condiciones especiales para pago al contado.',
-            metragem: 'El penthouse tiene <strong>320m² de área útil</strong> en 2 pisos. Terraza privada de 80m² con piscina. Techo de 3,2m.',
-            localizacao: 'Ubicado en <strong>Jardines, São Paulo</strong> — a 400m del Parque Trianon. Barrio noble con fácil acceso al metro.',
-            visita: '¡Excelente! Para agendar una visita, dígame su nombre y mejor horario. Disponibilidad de lunes a sábado.'
+            metragem: 'El penthouse tiene <strong>320mÂ² de Ã¡rea Ãºtil</strong> en 2 pisos. Terraza privada de 80mÂ² con piscina. Techo de 3,2m.',
+            localizacao: 'Ubicado en <strong>Jardines, SÃ£o Paulo</strong> â€” a 400m del Parque Trianon. Barrio noble con fÃ¡cil acceso al metro.',
+            visita: 'Â¡Excelente! Para agendar una visita, dÃ­game su nombre y mejor horario. Disponibilidad de lunes a sÃ¡bado.'
           }
         }
       },
       {
         tag: { pt: 'VENDA', es: 'VENTA' },
-        loc: { pt: '📍 Pinheiros, São Paulo — SP', es: '📍 Pinheiros, São Paulo — SP' },
-        name: { pt: 'Apartamento Alto<br/>Padrão', es: 'Apartamento de<br/>Alto Estándar' },
+        loc: { pt: 'ðŸ“ Pinheiros, SÃ£o Paulo â€” SP', es: 'ðŸ“ Pinheiros, SÃ£o Paulo â€” SP' },
+        name: { pt: 'Apartamento Alto<br/>PadrÃ£o', es: 'Apartamento de<br/>Alto EstÃ¡ndar' },
         price: 'R$ 1.850.000',
         priceLabel: { pt: '/ venda', es: '/ venta' },
-        s1: '180m²', s2: '3', s3: '2',
+        s1: '180mÂ²', s2: '3', s3: '2',
         intro: {
-          pt: 'Olá! 👋 Sou o assistente do <strong>Apartamento em Pinheiros</strong>.<br/><br/>Posso te contar tudo sobre este imóvel!',
-          es: '¡Hola! 👋 Soy el asistente del <strong>Apartamento en Pinheiros</strong>.<br/><br/>¡Puedo contarle todo sobre este inmueble!'
+          pt: 'OlÃ¡! ðŸ‘‹ Sou o assistente do <strong>Apartamento em Pinheiros</strong>.<br/><br/>Posso te contar tudo sobre este imÃ³vel!',
+          es: 'Â¡Hola! ðŸ‘‹ Soy el asistente del <strong>Apartamento en Pinheiros</strong>.<br/><br/>Â¡Puedo contarle todo sobre este inmueble!'
         },
         qa: {
           pt: {
-            preco: 'O valor é <strong>R$ 1.850.000</strong>. Financiamento facilitado. Condomínio R$ 1.200/mês.',
-            metragem: '<strong>180m²</strong> de área útil. 3 suítes, master com closet e hidromassagem. Varanda gourmet.',
-            localizacao: '<strong>Pinheiros</strong> — um dos bairros mais valorizados de SP. A 5 min do metrô Fradique Coutinho.',
-            visita: 'Para agendar visita informe seu nome e horário preferido!'
+            preco: 'O valor Ã© <strong>R$ 1.850.000</strong>. Financiamento facilitado. CondomÃ­nio R$ 1.200/mÃªs.',
+            metragem: '<strong>180mÂ²</strong> de Ã¡rea Ãºtil. 3 suÃ­tes, master com closet e hidromassagem. Varanda gourmet.',
+            localizacao: '<strong>Pinheiros</strong> â€” um dos bairros mais valorizados de SP. A 5 min do metrÃ´ Fradique Coutinho.',
+            visita: 'Para agendar visita informe seu nome e horÃ¡rio preferido!'
           },
           es: {
             preco: 'El valor es <strong>R$ 1.850.000</strong>. Financiamiento facilitado. Condominio R$ 1.200/mes.',
-            metragem: '<strong>180m²</strong> de área útil. 3 suites, master con closet e hidromasaje. Balcón gourmet.',
-            localizacao: '<strong>Pinheiros</strong> — uno de los barrios más valorizados de SP. A 5 min del metro Fradique Coutinho.',
-            visita: 'Para agendar visita, ¡dígame su nombre y horario preferido!'
+            metragem: '<strong>180mÂ²</strong> de Ã¡rea Ãºtil. 3 suites, master con closet e hidromasaje. BalcÃ³n gourmet.',
+            localizacao: '<strong>Pinheiros</strong> â€” uno de los barrios mÃ¡s valorizados de SP. A 5 min del metro Fradique Coutinho.',
+            visita: 'Para agendar visita, Â¡dÃ­game su nombre y horario preferido!'
           }
         }
       },
       {
         tag: { pt: 'VENDA', es: 'VENTA' },
-        loc: { pt: '📍 Alphaville, Barueri — SP', es: '📍 Alphaville, Barueri — SP' },
-        name: { pt: 'Casa em<br/>Condomínio Fechado', es: 'Casa en<br/>Condominio Cerrado' },
+        loc: { pt: 'ðŸ“ Alphaville, Barueri â€” SP', es: 'ðŸ“ Alphaville, Barueri â€” SP' },
+        name: { pt: 'Casa em<br/>CondomÃ­nio Fechado', es: 'Casa en<br/>Condominio Cerrado' },
         price: 'R$ 3.100.000',
         priceLabel: { pt: '/ venda', es: '/ venta' },
-        s1: '420m²', s2: '5', s3: '4',
+        s1: '420mÂ²', s2: '5', s3: '4',
         intro: {
-          pt: 'Olá! 👋 Sou o assistente da <strong>Casa em Alphaville</strong>.<br/><br/>Uma das mais completas do condomínio. O que quer saber?',
-          es: '¡Hola! 👋 Soy el asistente de la <strong>Casa en Alphaville</strong>.<br/><br/>Una de las más completas del condominio. ¿Qué quiere saber?'
+          pt: 'OlÃ¡! ðŸ‘‹ Sou o assistente da <strong>Casa em Alphaville</strong>.<br/><br/>Uma das mais completas do condomÃ­nio. O que quer saber?',
+          es: 'Â¡Hola! ðŸ‘‹ Soy el asistente de la <strong>Casa en Alphaville</strong>.<br/><br/>Una de las mÃ¡s completas del condominio. Â¿QuÃ© quiere saber?'
         },
         qa: {
           pt: {
-            preco: 'Valor de <strong>R$ 3.100.000</strong>. Condomínio fechado com segurança 24h. IPTU R$ 6.800/ano.',
-            metragem: '<strong>420m²</strong> de área construída em terreno de 600m². 5 suítes, piscina aquecida e churrasqueira.',
-            localizacao: '<strong>Alphaville Residencial</strong>, Barueri. Condomínio de alto padrão a 25 min do centro de SP.',
-            visita: 'Visitas disponíveis aos fins de semana com agendamento prévio.'
+            preco: 'Valor de <strong>R$ 3.100.000</strong>. CondomÃ­nio fechado com seguranÃ§a 24h. IPTU R$ 6.800/ano.',
+            metragem: '<strong>420mÂ²</strong> de Ã¡rea construÃ­da em terreno de 600mÂ². 5 suÃ­tes, piscina aquecida e churrasqueira.',
+            localizacao: '<strong>Alphaville Residencial</strong>, Barueri. CondomÃ­nio de alto padrÃ£o a 25 min do centro de SP.',
+            visita: 'Visitas disponÃ­veis aos fins de semana com agendamento prÃ©vio.'
           },
           es: {
-            preco: 'Valor de <strong>R$ 3.100.000</strong>. Condominio cerrado con seguridad 24h. IBI R$ 6.800/año.',
-            metragem: '<strong>420m²</strong> de área construida en terreno de 600m². 5 suites, piscina climatizada y barbacoa.',
-            localizacao: '<strong>Alphaville Residencial</strong>, Barueri. Condominio de alto estándar a 25 min del centro de SP.',
+            preco: 'Valor de <strong>R$ 3.100.000</strong>. Condominio cerrado con seguridad 24h. IBI R$ 6.800/aÃ±o.',
+            metragem: '<strong>420mÂ²</strong> de Ã¡rea construida en terreno de 600mÂ². 5 suites, piscina climatizada y barbacoa.',
+            localizacao: '<strong>Alphaville Residencial</strong>, Barueri. Condominio de alto estÃ¡ndar a 25 min del centro de SP.',
             visita: 'Visitas disponibles los fines de semana con cita previa.'
           }
         }
@@ -1348,7 +1363,7 @@
       // Update tab content
       const activeTab = document.querySelector('.itab.active');
       if(activeTab) {
-        if(activeTab.textContent.includes('Descrição') || activeTab.textContent.includes('Descripción')) switchTab('desc', activeTab);
+        if(activeTab.textContent.includes('DescriÃ§Ã£o') || activeTab.textContent.includes('DescripciÃ³n')) switchTab('desc', activeTab);
         else if(activeTab.textContent.includes('Detalhes') || activeTab.textContent.includes('Detalles')) switchTab('detalhes', activeTab);
         else switchTab('local', activeTab);
       }
@@ -1434,13 +1449,13 @@
         } else {
           const im = imoveis[currentImovel];
           const resps = currentLang === 'es' ? [
-            `Sobre esta propiedad: ${im.name.es.replace('<br/>',' ')} en ${im.loc.es.replace('📍 ','')}. ¡Puedo contarle sobre el valor, metraje, ubicación o agendar una visita!`,
-            `¡Buena pregunta! Este inmueble tiene características únicas. ¿Quiere que detalle algún aspecto específico?`,
-            `Para información más detallada, puedo conectarle con uno de nuestros corredores. ¿Quiere agendar una charla?`
+            `Sobre esta propiedad: ${im.name.es.replace('<br/>',' ')} en ${im.loc.es.replace('ðŸ“ ','')}. Â¡Puedo contarle sobre el valor, metraje, ubicaciÃ³n o agendar una visita!`,
+            `Â¡Buena pregunta! Este inmueble tiene caracterÃ­sticas Ãºnicas. Â¿Quiere que detalle algÃºn aspecto especÃ­fico?`,
+            `Para informaciÃ³n mÃ¡s detallada, puedo conectarle con uno de nuestros corredores. Â¿Quiere agendar una charla?`
           ] : [
-            `Sobre esta propriedade: ${im.name.pt.replace('<br/>',' ')} em ${im.loc.pt.replace('📍 ','')}. Posso te contar sobre o valor, metragem, localização ou agendar uma visita!`,
-            `Ótima pergunta! Este imóvel tem características únicas. Quer que eu detalhe algum aspecto específico?`,
-            `Para informações mais detalhadas, posso conectar você com um de nossos corretores especializados. Quer agendar uma conversa?`
+            `Sobre esta propriedade: ${im.name.pt.replace('<br/>',' ')} em ${im.loc.pt.replace('ðŸ“ ','')}. Posso te contar sobre o valor, metragem, localizaÃ§Ã£o ou agendar uma visita!`,
+            `Ã“tima pergunta! Este imÃ³vel tem caracterÃ­sticas Ãºnicas. Quer que eu detalhe algum aspecto especÃ­fico?`,
+            `Para informaÃ§Ãµes mais detalhadas, posso conectar vocÃª com um de nossos corretores especializados. Quer agendar uma conversa?`
           ];
           addBot(resps[Math.floor(Math.random()*resps.length)]);
           setOpts([
