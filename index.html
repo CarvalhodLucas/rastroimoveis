@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rastro Imobiliária | Curadoria Exclusiva</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500;1,600;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --cream: #F5F0E8;
+      --gold: #C9A96E;
+      --dark: #1A1A1A;
+      --white: #FFFFFF;
+      --gray: #888888;
+      --font-heading: 'Cormorant Garamond', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none; /* Custom cursor */
+    }
+    
+    body {
+      font-family: var(--font-body);
+      background-color: var(--cream);
+      color: var(--black);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      font-weight: 500;
+    }
+    
+    .text-gold { color: var(--gold); }
+    .text-cream { color: var(--cream); }
+    .text-white { color: var(--white); }
+    .text-gray { color: var(--gray); }
+    .italic { font-style: italic; }
+    
+    /* Grain texture overlay */
+    .grain-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* Custom Cursor */
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+      transition: width 0.2s, height 0.2s, background-color 0.2s;
+    }
+    .custom-cursor.hover {
+      width: 40px;
+      height: 40px;
+      background-color: rgba(201, 169, 110, 0.2);
+    }
+    
+    /* Utility Classes */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-gold {
+      background-color: var(--gold);
+      color: var(--black);
+      border: 1px solid var(--gold);
+    }
+    .btn-gold:hover {
+      background-color: transparent;
+      color: var(--gold);
+    }
+    
+    .btn-outline-gold {
+      background-color: transparent;
+      color: var(--cream);
+      border: 1px solid var(--gold);
+    }
+    .btn-outline-gold:hover {
+      background-color: var(--gold);
+      color: var(--black);
+    }
+    
+    /* SECTION 1: NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: all 0.4s ease;
+      color: var(--cream);
+    }
+    nav.scrolled {
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem 5%;
+    }
+    
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--gold);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+    .logo-text {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    
+    .nav-center {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-link {
+      color: rgba(245, 240, 232, 0.7);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover {
+      color: rgba(245, 240, 232, 1);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 1px;
+      background-color: var(--gold);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .lang-toggle {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+    }
+    .lang-btn {
+      color: rgba(245, 240, 232, 0.5);
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      transition: color 0.3s ease;
+    }
+    .lang-btn.active {
+      color: var(--gold);
+    }
+    .nav-phone {
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--cream);
+    }
+    
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      z-index: 101;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 2px;
+      background-color: var(--cream);
+      transition: all 0.3s;
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: var(--black);
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .mobile-menu .nav-link {
+      font-size: 1.5rem;
+    }
+    
+    @media (max-width: 1024px) {
+      .nav-center, .nav-phone, .nav-right .btn {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+    
+    /* SECTION 2: HERO */
+    .hero-scroll-section {
+      height: 600vh;
+      position: relative;
+      background: var(--black);
+    }
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.3) 50%, transparent 100%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: absolute;
+      bottom: 15%;
+      left: 0;
+      padding: 0 8%;
+      z-index: 2;
+      color: var(--white);
+    }
+    .hero-tag {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .hero-headline {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .hero-headline .italic {
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      font-weight: 400;
+      display: block;
+    }
+    .hero-subtext {
+      font-family: var(--font-body);
+      color: rgba(245, 240, 232, 0.7);
+      font-size: 1rem;
+      max-width: 420px;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .btn-ghost-cream {
+      background: transparent;
+      color: var(--cream);
+      border: none;
+      position: relative;
+    }
+    .btn-ghost-cream::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 1px;
+      background-color: var(--cream);
+      transition: opacity 0.3s;
+      opacity: 0.5;
+    }
+    .btn-ghost-cream:hover::after {
+      opacity: 1;
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.7;
+    }
+    .scroll-text {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--cream);
+    }
+    .scroll-arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--cream) 50%, transparent 50%);
+      background-size: 100% 200%;
+      animation: arrowDown 2s infinite linear;
+    }
+    @keyframes arrowDown {
+      0% { background-position: 0 -100%; }
+      100% { background-position: 0 100%; }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content {
+        padding: 0 5%;
+        bottom: 10%;
+      }
+      .hero-ctas {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-overlay {
+        background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.4) 50%, transparent 100%);
+      }
+    }
+    
+    /* SECTION 3: PROPERTY SEARCH */
+    .search-section {
+      padding: 4rem 5%;
+      background-color: var(--cream);
+      position: relative;
+      z-index: 10;
+    }
+    .search-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 4px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      transform: translateY(-50%);
+      margin-top: -2rem;
+    }
+    .search-input {
+      flex: 1;
+      border: none;
+      padding: 1.2rem;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      outline: none;
+      color: var(--black);
+    }
+    .search-input::placeholder {
+      color: var(--gray);
+    }
+    .search-dropdowns {
+      display: flex;
+      gap: 1rem;
+      padding: 0 1rem;
+      border-left: 1px solid rgba(0,0,0,0.1);
+    }
+    .dropdown {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--dark);
+      cursor: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .search-btn {
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      padding: 1.2rem 2rem;
+      font-family: var(--font-body);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
+    .search-btn:hover {
+      background: #b5955c;
+    }
+    .filter-tags {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: -1rem;
+    }
+    .tag {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--gray);
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 20px;
+      transition: all 0.3s;
+    }
+    .tag.active, .tag:hover {
+      color: var(--black);
+      border-color: var(--black);
+    }
+    
+    @media (max-width: 1024px) {
+      .search-container {
+        flex-direction: column;
+        transform: translateY(-2rem);
+        margin-top: 0;
+        padding: 1rem;
+      }
+      .search-dropdowns {
+        border-left: none;
+        border-top: 1px solid rgba(0,0,0,0.1);
+        padding: 1rem 0;
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .search-btn {
+        width: 100%;
+      }
+    }
+    
+    /* SECTION 4: FEATURED PROPERTY */
+    .featured-section {
+      padding: 4rem 5% 8rem;
+      background-color: var(--cream);
+    }
+    .featured-grid {
+      display: flex;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .featured-left {
+      flex: 0 0 60%;
+      position: relative;
+    }
+    .featured-video {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--white);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .featured-left:hover .play-btn {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: rgba(255,255,255,0.3);
+    }
+    .featured-badge {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      background: var(--gold);
+      color: var(--black);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 1rem;
+      text-transform: uppercase;
+    }
+    .featured-location {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      color: var(--white);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .featured-right {
+      flex: 0 0 calc(40% - 4rem);
+    }
+    .label-venda {
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .featured-title {
+      font-size: 2.5rem;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .featured-price {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .price-suffix {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .stat-item {
+      font-size: 0.95rem;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .stat-item::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .tabs {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .tab {
+      font-size: 0.9rem;
+      color: var(--gray);
+      position: relative;
+      padding-bottom: 0.5rem;
+      transition: color 0.3s;
+    }
+    .tab.active {
+      color: var(--black);
+      font-weight: 500;
+    }
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--gold);
+    }
+    .featured-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--gray);
+      margin-bottom: 2.5rem;
+    }
+    
+    .ai-assistant {
+      background: var(--black);
+      padding: 2rem;
+      border-radius: 4px;
+      color: var(--white);
+    }
+    .ai-header {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .ai-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 1.5rem;
+    }
+    .ai-cta {
+      color: var(--gold);
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: gap 0.3s;
+    }
+    .ai-cta:hover {
+      gap: 0.8rem;
+    }
+    
+    @media (max-width: 1024px) {
+      .featured-grid {
+        flex-direction: column;
+      }
+      .featured-left, .featured-right {
+        flex: 0 0 100%;
+        width: 100%;
+      }
+      .featured-video {
+        height: 400px;
+      }
+    }
+    
+    /* SECTION 5: PROPERTY GRID */
+    .grid-section {
+      padding: 4rem 5% 8rem;
+      background-color: var(--cream);
+    }
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .grid-title {
+      font-size: 3.5rem;
+      line-height: 1;
+    }
+    .grid-title .italic {
+      display: block;
+      color: var(--gold);
+      padding-left: 2rem;
+    }
+    .grid-count {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .properties {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      max-width: 1400px;
+      margin: 0 auto 4rem;
+    }
+    .property-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+    }
+    .property-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+    .property-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      transition: border-color 0.4s ease;
+      pointer-events: none;
+    }
+    .property-card:hover::after {
+      border-color: var(--gold);
+    }
+    .card-img-wrap {
+      position: relative;
+      height: 260px;
+      overflow: hidden;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .property-card:hover .card-img {
+      transform: scale(1.05);
+    }
+    .card-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: var(--white);
+      color: var(--black);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.8rem;
+      z-index: 2;
+    }
+    .card-content {
+      padding: 1.5rem;
+    }
+    .card-title {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .card-location {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+    .card-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+    }
+    .card-price {
+      font-size: 1.4rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .grid-center {
+      text-align: center;
+    }
+    .btn-outline-dark {
+      background: transparent;
+      color: var(--black);
+      border: 1px solid var(--gold);
+    }
+    .btn-outline-dark:hover {
+      background: var(--gold);
+    }
+    
+    @media (max-width: 1024px) {
+      .properties {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .grid-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .properties {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* SECTION 6: PHILOSOPHY */
+    .philosophy-section {
+      background: var(--dark);
+      padding: 8rem 5%;
+      position: relative;
+      color: var(--white);
+    }
+    .philosophy-container {
+      display: flex;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .philosophy-left {
+      flex: 0 0 40%;
+    }
+    .phil-tag {
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      margin-bottom: 2rem;
+      display: block;
+    }
+    .phil-title {
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      line-height: 1.1;
+      margin-bottom: 2rem;
+    }
+    .phil-body {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: rgba(245, 240, 232, 0.7);
+    }
+    .philosophy-right {
+      flex: 0 0 calc(60% - 5rem);
+    }
+    .phil-video-wrap {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+    .phil-video {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+    }
+    .phil-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+    }
+    .phil-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .phil-stat-num {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .phil-stat-label {
+      font-size: 0.9rem;
+      color: var(--cream);
+      opacity: 0.8;
+    }
+    
+    @media (max-width: 1024px) {
+      .philosophy-container {
+        flex-direction: column;
+      }
+      .philosophy-left, .philosophy-right {
+        flex: 0 0 100%;
+        width: 100%;
+      }
+    }
+    
+    /* SECTION 7: CTA FINAL */
+    .cta-section {
+      background: var(--gold);
+      padding: 6rem 5%;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-pattern {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(0,0,0,0.03) 10px,
+        rgba(0,0,0,0.03) 20px
+      );
+      pointer-events: none;
+    }
+    .cta-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .cta-title {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      line-height: 1.1;
+      color: var(--black);
+    }
+    .cta-btns {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .btn-black {
+      background: var(--black);
+      color: var(--white);
+      border: 1px solid var(--black);
+    }
+    .btn-black:hover {
+      background: transparent;
+      color: var(--black);
+    }
+    .btn-ghost-black {
+      background: transparent;
+      color: var(--black);
+      border: none;
+      position: relative;
+    }
+    .btn-ghost-black::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 1px;
+      background-color: var(--black);
+      transition: opacity 0.3s;
+      opacity: 0.5;
+    }
+    .btn-ghost-black:hover::after {
+      opacity: 1;
+    }
+    
+    @media (max-width: 1024px) {
+      .cta-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3rem;
+      }
+    }
+    
+    /* SECTION 8: FOOTER */
+    footer {
+      background: var(--black);
+      color: var(--cream);
+      padding: 6rem 5% 2rem;
+      position: relative;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 4rem;
+      max-width: 1400px;
+      margin: 0 auto 4rem;
+    }
+    .footer-col-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .footer-links {
+      list-style: none;
+    }
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+    .footer-links a {
+      color: rgba(245, 240, 232, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover {
+      color: var(--gold);
+    }
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .footer-tagline {
+      color: rgba(245, 240, 232, 0.5);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      max-width: 250px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+    }
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(245, 240, 232, 0.2);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--cream);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .social-icon:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.5);
+    }
+    
+    @media (max-width: 1024px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+    }
+    
+    /* Animations & Interactivity */
+    .stagger-el {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .stagger-el.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor" id="custom-cursor"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#comprar" class="nav-link" data-pt="Comprar" data-es="Comprar">Comprar</a>
+    <a href="#alugar" class="nav-link" data-pt="Alugar" data-es="Alquilar">Alugar</a>
+    <a href="#lancamentos" class="nav-link" data-pt="Lançamentos" data-es="Lanzamientos">Lançamentos</a>
+    <a href="#sobre" class="nav-link" data-pt="Sobre" data-es="Sobre">Sobre</a>
+    <a href="#contato" class="nav-link" data-pt="Contato" data-es="Contacto">Contato</a>
+  </div>
+
+  <!-- SECTION 1: NAVIGATION -->
+  <nav id="navbar">
+    <div class="nav-left">
+      <div class="logo-mark">R</div>
+      <div class="logo-text">Rastro Imobiliária</div>
+    </div>
+    
+    <div class="nav-center">
+      <a href="#comprar" class="nav-link" data-pt="Comprar" data-es="Comprar">Comprar</a>
+      <a href="#alugar" class="nav-link" data-pt="Alugar" data-es="Alquilar">Alugar</a>
+      <a href="#lancamentos" class="nav-link" data-pt="Lançamentos" data-es="Lanzamientos">Lançamentos</a>
+      <a href="#sobre" class="nav-link" data-pt="Sobre" data-es="Sobre">Sobre</a>
+      <a href="#contato" class="nav-link" data-pt="Contato" data-es="Contacto">Contato</a>
+    </div>
+    
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="pt" onclick="toggleLang('pt')">PT</button>
+        <span class="text-gray">|</span>
+        <button class="lang-btn" data-lang="es" onclick="toggleLang('es')">ES</button>
+      </div>
+      <a href="https://wa.me/5511900000000" class="nav-phone hover-target">+55 11 9000-0000</a>
+      <a href="#imoveis" class="btn btn-outline-gold hover-target" data-pt="VER IMÓVEIS" data-es="VER INMUEBLES">VER IMÓVEIS</a>
+      
+      <button class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- SECTION 2: HERO -->
+  <section id="hero" class="hero-scroll-section">
+    <div class="hero-sticky">
+      <video id="hero-video" src="hero-drone.mp4" preload="auto" muted playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+      <div class="hero-overlay"></div>
+      
+      <div class="hero-content">
+        <span class="hero-tag stagger-el" data-pt="CURADORIA EXCLUSIVA DE IMÓVEIS" data-es="CURADURÍA EXCLUSIVA DE PROPIEDADES">CURADORIA EXCLUSIVA DE IMÓVEIS</span>
+        <h1 class="hero-headline stagger-el" style="transition-delay: 0.1s">
+          <span data-pt="Encontre onde" data-es="Encuentre donde">Encontre onde</span>
+          <span class="italic text-gold" data-pt="viver." data-es="vivir.">viver.</span>
+        </h1>
+        <p class="hero-subtext stagger-el" style="transition-delay: 0.2s" data-pt="Curadoria exclusiva de propriedades para compra e aluguel — com um assistente virtual que conhece cada detalhe." data-es="Curaduría exclusiva de propiedades para compra y alquiler — con un asistente virtual que conoce cada detalle.">
+          Curadoria exclusiva de propriedades para compra e aluguel — com um assistente virtual que conhece cada detalhe.
+        </p>
+        <div class="hero-ctas stagger-el" style="transition-delay: 0.3s">
+          <a href="#imoveis" class="btn btn-gold hover-target" data-pt="VER IMÓVEIS &rarr;" data-es="VER INMUEBLES &rarr;">VER IMÓVEIS &rarr;</a>
+          <a href="#assistente" class="btn btn-ghost-cream hover-target" data-pt="FALAR COM ASSISTENTE" data-es="HABLAR CON ASISTENTE">FALAR COM ASSISTENTE</a>
+        </div>
+      </div>
+      
+      <div class="scroll-indicator">
+        <span class="scroll-text">SCROLL</span>
+        <div class="scroll-arrow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: PROPERTY SEARCH -->
+  <section class="search-section" id="imoveis">
+    <div class="search-container stagger-el">
+      <input type="text" class="search-input hover-target" placeholder="🔍 Buscar por bairro, cidade ou referência..." data-pt="🔍 Buscar por bairro, cidade ou referência..." data-es="🔍 Buscar por barrio, ciudad o referencia...">
+      <div class="search-dropdowns">
+        <div class="dropdown hover-target" data-pt="COMPRAR &#9660;" data-es="COMPRAR &#9660;">COMPRAR &#9660;</div>
+        <div class="dropdown hover-target" data-pt="TIPO &#9660;" data-es="TIPO &#9660;">TIPO &#9660;</div>
+        <div class="dropdown hover-target" data-pt="PREÇO &#9660;" data-es="PRECIO &#9660;">PREÇO &#9660;</div>
+        <div class="dropdown hover-target" data-pt="QUARTOS &#9660;" data-es="CUARTOS &#9660;">QUARTOS &#9660;</div>
+      </div>
+      <button class="search-btn hover-target" data-pt="BUSCAR &rarr;" data-es="BUSCAR &rarr;">BUSCAR &rarr;</button>
+    </div>
+    
+    <div class="filter-tags stagger-el" style="transition-delay: 0.1s">
+      <button class="tag active hover-target" data-pt="Todos" data-es="Todos">Todos</button>
+      <button class="tag hover-target" data-pt="Alto Padrão" data-es="Alto Standing">Alto Padrão</button>
+      <button class="tag hover-target" data-pt="Lançamentos" data-es="Lanzamientos">Lançamentos</button>
+      <button class="tag hover-target" data-pt="Cobertura" data-es="Penthouse">Cobertura</button>
+      <button class="tag hover-target" data-pt="Casa em Condomínio" data-es="Casa en Condominio">Casa em Condomínio</button>
+      <button class="tag hover-target" data-pt="Studio" data-es="Estudio">Studio</button>
+    </div>
+  </section>
+
+  <!-- SECTION 4: FEATURED PROPERTY -->
+  <section class="featured-section">
+    <div class="featured-grid">
+      <div class="featured-left stagger-el">
+        <video class="featured-video" src="tour-interior.mp4" autoplay muted loop playsinline></video>
+        <div class="featured-badge">DESTAQUE</div>
+        <div class="featured-location">📍 Jardins, São Paulo — SP</div>
+        <div class="play-btn hover-target">&#9658;</div>
+      </div>
+      
+      <div class="featured-right stagger-el" style="transition-delay: 0.2s">
+        <span class="label-venda" data-pt="VENDA" data-es="VENTA">VENDA</span>
+        <h2 class="featured-title">Penthouse Dúplex<br><span class="italic">Vista Panorâmica</span></h2>
+        <div class="featured-price">R$ 4.200.000 <span class="price-suffix" data-pt="/venda" data-es="/venta">/venda</span></div>
+        
+        <div class="stats-grid">
+          <div class="stat-item" data-pt="320m&sup2; área total" data-es="320m&sup2; área total">320m&sup2; área total</div>
+          <div class="stat-item" data-pt="4 quartos" data-es="4 cuartos">4 quartos</div>
+          <div class="stat-item" data-pt="3 vagas" data-es="3 plazas">3 vagas</div>
+          <div class="stat-item" data-pt="4 banheiros" data-es="4 baños">4 banheiros</div>
+        </div>
+        
+        <div class="tabs">
+          <div class="tab active hover-target" data-pt="Descrição" data-es="Descripción">Descrição</div>
+          <div class="tab hover-target" data-pt="Detalhes" data-es="Detalles">Detalhes</div>
+          <div class="tab hover-target" data-pt="Localização" data-es="Ubicación">Localização</div>
+        </div>
+        
+        <p class="featured-desc" data-pt="Penthouse dúplex de alto padrão com terraço privado e vista 360° da cidade. Acabamentos nobres, cozinha gourmet integrada, sala de cinema e piscina privada." data-es="Penthouse dúplex de alto standing con terraza privada y vista 360° de la ciudad. Acabados nobles, cocina gourmet integrada, sala de cine y piscina privada.">
+          Penthouse dúplex de alto padrão com terraço privado e vista 360&deg; da cidade. Acabamentos nobres, cozinha gourmet integrada, sala de cinema e piscina privada.
+        </p>
+        
+        <div class="ai-assistant" id="assistente">
+          <div class="ai-header" data-pt="🤖 ASSISTENTE DO IMÓVEL" data-es="🤖 ASISTENTE DEL INMUEBLE">🤖 ASSISTENTE DO IMÓVEL</div>
+          <p class="ai-text" data-pt="Olá! Sou o assistente deste Penthouse. Conheço cada detalhe. O que gostaria de saber?" data-es="¡Hola! Soy el asistente de este Penthouse. Conozco cada detalle. ¿Qué le gustaría saber?">
+            Olá! Sou o assistente deste Penthouse. Conheço cada detalhe. O que gostaria de saber?
+          </p>
+          <a href="#" class="ai-cta hover-target" data-pt="Perguntar sobre este imóvel &rarr;" data-es="Preguntar sobre este inmueble &rarr;">Perguntar sobre este imóvel &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: PROPERTY GRID -->
+  <section class="grid-section">
+    <div class="grid-header stagger-el">
+      <div>
+        <h2 class="grid-title">
+          <span data-pt="Outras" data-es="Otras">Outras</span>
+          <span class="italic" data-pt="propriedades" data-es="propiedades">propriedades</span>
+        </h2>
+      </div>
+      <div class="grid-count" data-pt="12 imóveis disponíveis" data-es="12 inmuebles disponibles">12 imóveis disponíveis</div>
+    </div>
+    
+    <div class="properties">
+      <!-- Property 1 -->
+      <div class="property-card stagger-el hover-target">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800" alt="Cobertura Duplex" class="card-img">
+          <div class="card-badge" data-pt="VENDA" data-es="VENTA">VENDA</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Cobertura Duplex</h3>
+          <div class="card-location">Itaim Bibi, SP</div>
+          <div class="card-stats">280m&sup2; &middot; 3q &middot; 3v</div>
+          <div class="card-price">R$ 2.900.000</div>
+        </div>
+      </div>
+      
+      <!-- Property 2 -->
+      <div class="property-card stagger-el hover-target" style="transition-delay: 0.1s">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800" alt="Casa em Condomínio" class="card-img">
+          <div class="card-badge" data-pt="VENDA" data-es="VENTA">VENDA</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Casa em Condomínio</h3>
+          <div class="card-location">Alphaville, SP</div>
+          <div class="card-stats">420m&sup2; &middot; 5q &middot; 4v</div>
+          <div class="card-price">R$ 3.100.000</div>
+        </div>
+      </div>
+      
+      <!-- Property 3 -->
+      <div class="property-card stagger-el hover-target" style="transition-delay: 0.2s">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800" alt="Casa Alto Padrão" class="card-img">
+          <div class="card-badge" data-pt="VENDA" data-es="VENTA">VENDA</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Casa Alto Padrão</h3>
+          <div class="card-location">Jardins, SP</div>
+          <div class="card-stats">350m&sup2; &middot; 4q &middot; 4v</div>
+          <div class="card-price">R$ 4.500.000</div>
+        </div>
+      </div>
+      
+      <!-- Property 4 -->
+      <div class="property-card stagger-el hover-target">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800" alt="Apartamento Alto Padrão" class="card-img">
+          <div class="card-badge" data-pt="VENDA" data-es="VENTA">VENDA</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Apartamento Alto Padrão</h3>
+          <div class="card-location">Pinheiros, SP</div>
+          <div class="card-stats">180m&sup2; &middot; 3q &middot; 2v</div>
+          <div class="card-price">R$ 1.850.000</div>
+        </div>
+      </div>
+      
+      <!-- Property 5 -->
+      <div class="property-card stagger-el hover-target" style="transition-delay: 0.1s">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800" alt="Loft Industrial" class="card-img">
+          <div class="card-badge" data-pt="ALUGUEL" data-es="ALQUILER">ALUGUEL</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Loft Industrial</h3>
+          <div class="card-location">Moema, SP</div>
+          <div class="card-stats">95m&sup2; &middot; 1q &middot; 1v</div>
+          <div class="card-price">R$ 6.500<span style="font-size: 0.8rem; color: var(--gray);" data-pt="/mês" data-es="/mes">/mês</span></div>
+        </div>
+      </div>
+      
+      <!-- Property 6 -->
+      <div class="property-card stagger-el hover-target" style="transition-delay: 0.2s">
+        <div class="card-img-wrap">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800" alt="Studio Moderno" class="card-img">
+          <div class="card-badge" data-pt="ALUGUEL" data-es="ALQUILER">ALUGUEL</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Studio Moderno</h3>
+          <div class="card-location">Vila Madalena, SP</div>
+          <div class="card-stats">45m&sup2; &middot; 1q &middot; 1v</div>
+          <div class="card-price">R$ 3.800<span style="font-size: 0.8rem; color: var(--gray);" data-pt="/mês" data-es="/mes">/mês</span></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="grid-center stagger-el">
+      <a href="#" class="btn btn-outline-dark hover-target" data-pt="VER TODOS OS IMÓVEIS &rarr;" data-es="VER TODOS LOS INMUEBLES &rarr;">VER TODOS OS IMÓVEIS &rarr;</a>
+    </div>
+  </section>
+
+  <!-- SECTION 6: PHILOSOPHY -->
+  <section class="philosophy-section">
+    <div class="grain-overlay"></div>
+    <div class="philosophy-container">
+      <div class="philosophy-left stagger-el">
+        <span class="phil-tag" data-pt="NOSSA FILOSOFIA" data-es="NUESTRA FILOSOFÍA">NOSSA FILOSOFIA</span>
+        <h2 class="phil-title">
+          <span data-pt="Mais que imóveis &mdash;" data-es="Más que inmuebles &mdash;">Mais que imóveis &mdash;</span><br>
+          <span class="italic text-gold" data-pt="lares." data-es="hogares.">lares.</span>
+        </h2>
+        <p class="phil-body" data-pt="Acreditamos que encontrar o imóvel certo é uma das decisões mais importantes da vida. Por isso combinamos curadoria humana com tecnologia &mdash; para que você tenha toda a informação antes de decidir." data-es="Creemos que encontrar el inmueble adecuado es una de las decisiones más importantes de la vida. Por eso combinamos curaduría humana con tecnología &mdash; para que tenga toda la información antes de decidir.">
+          Acreditamos que encontrar o imóvel certo é uma das decisões mais importantes da vida. 
+          Por isso combinamos curadoria humana com tecnologia &mdash; para que você tenha toda a 
+          informação antes de decidir.
+        </p>
+      </div>
+      
+      <div class="philosophy-right stagger-el" style="transition-delay: 0.2s">
+        <div class="phil-video-wrap">
+          <video class="phil-video" src="cidade-aerea.mp4" autoplay muted loop playsinline></video>
+          <div class="phil-video-overlay"></div>
+        </div>
+        
+        <div class="phil-stats">
+          <div>
+            <div class="phil-stat-num stat-counter" data-target="850">0</div>
+            <div class="phil-stat-label" data-pt="Imóveis vendidos" data-es="Inmuebles vendidos">Imóveis vendidos</div>
+          </div>
+          <div>
+            <div class="phil-stat-num stat-counter" data-target="12">0</div>
+            <div class="phil-stat-label" data-pt="Anos de experiência" data-es="Años de experiencia">Anos de experiência</div>
+          </div>
+          <div>
+            <div class="phil-stat-num stat-counter" data-target="98" data-suffix="%">0</div>
+            <div class="phil-stat-label" data-pt="Satisfação" data-es="Satisfacción">Satisfação</div>
+          </div>
+          <div>
+            <div class="phil-stat-num">24h</div>
+            <div class="phil-stat-label" data-pt="Assistente ativo" data-es="Asistente activo">Assistente ativo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: CTA FINAL -->
+  <section class="cta-section">
+    <div class="cta-pattern"></div>
+    <div class="cta-container">
+      <div class="cta-left stagger-el">
+        <h2 class="cta-title">
+          <span data-pt="Encontrou o imóvel" data-es="&iquest;Encontró la propiedad">Encontrou o imóvel</span><br>
+          <span class="italic" data-pt="dos seus sonhos?" data-es="de sus sueños?">dos seus sonhos?</span>
+        </h2>
+      </div>
+      <div class="cta-btns stagger-el" style="transition-delay: 0.2s">
+        <a href="#assistente" class="btn btn-black hover-target" data-pt="FALAR COM ASSISTENTE &rarr;" data-es="HABLAR CON ASISTENTE &rarr;">FALAR COM ASSISTENTE &rarr;</a>
+        <a href="tel:+5511900000000" class="btn btn-ghost-black hover-target" data-pt="Ligar agora" data-es="Llamar ahora">Ligar agora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 8: FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="stagger-el">
+        <span class="footer-logo">Rastro</span>
+        <p class="footer-tagline" data-pt="Curadoria exclusiva de propriedades de alto padrão." data-es="Curaduría exclusiva de propiedades de alto standing.">Curadoria exclusiva de propriedades de alto padrão.</p>
+        <div class="footer-social">
+          <a href="#" class="social-icon hover-target">In</a>
+          <a href="#" class="social-icon hover-target">Ig</a>
+          <a href="#" class="social-icon hover-target">Fb</a>
+        </div>
+      </div>
+      
+      <div class="stagger-el" style="transition-delay: 0.1s">
+        <h4 class="footer-col-title" data-pt="Buscar" data-es="Buscar">Buscar</h4>
+        <ul class="footer-links">
+          <li><a href="#" class="hover-target" data-pt="Comprar" data-es="Comprar">Comprar</a></li>
+          <li><a href="#" class="hover-target" data-pt="Alugar" data-es="Alquilar">Alugar</a></li>
+          <li><a href="#" class="hover-target" data-pt="Lançamentos" data-es="Lanzamientos">Lançamentos</a></li>
+          <li><a href="#" class="hover-target" data-pt="Alto Padrão" data-es="Alto Standing">Alto Padrão</a></li>
+        </ul>
+      </div>
+      
+      <div class="stagger-el" style="transition-delay: 0.2s">
+        <h4 class="footer-col-title" data-pt="Empresa" data-es="Empresa">Empresa</h4>
+        <ul class="footer-links">
+          <li><a href="#" class="hover-target" data-pt="Sobre" data-es="Sobre">Sobre</a></li>
+          <li><a href="#" class="hover-target" data-pt="Corretores" data-es="Corredores">Corretores</a></li>
+          <li><a href="#" class="hover-target" data-pt="Blog" data-es="Blog">Blog</a></li>
+          <li><a href="#" class="hover-target" data-pt="Avaliar imóvel" data-es="Evaluar inmueble">Avaliar imóvel</a></li>
+        </ul>
+      </div>
+      
+      <div class="stagger-el" style="transition-delay: 0.3s">
+        <h4 class="footer-col-title" data-pt="Contato" data-es="Contacto">Contato</h4>
+        <ul class="footer-links">
+          <li><a href="tel:+5511900000000" class="hover-target">+55 11 9000-0000</a></li>
+          <li><a href="mailto:contato@rastroimobiliaria.com" class="hover-target">contato@rastroimobiliaria.com</a></li>
+          <li>Av. Faria Lima, 3000<br>São Paulo - SP</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div>&copy; 2026 Rastro Imobiliária. Todos os direitos reservados.</div>
+      <div>Desenvolvido por <span class="text-gold">Rastro Studio</span></div>
+    </div>
+  </footer>
+
+  <script>
+    // Custom Cursor
+    const cursor = document.getElementById('custom-cursor');
+    const hoverTargets = document.querySelectorAll('.hover-target, a, button, input, .dropdown');
+    
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+    
+    hoverTargets.forEach(target => {
+      target.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      target.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+    
+    // Navbar Scroll Effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+      if (mobileMenu.classList.contains('open')) {
+        hamburger.querySelectorAll('span')[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        hamburger.querySelectorAll('span')[1].style.opacity = '0';
+        hamburger.querySelectorAll('span')[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+      } else {
+        hamburger.querySelectorAll('span')[0].style.transform = 'none';
+        hamburger.querySelectorAll('span')[1].style.opacity = '1';
+        hamburger.querySelectorAll('span')[2].style.transform = 'none';
+      }
+    });
+    
+    document.querySelectorAll('.mobile-menu .nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.querySelectorAll('span')[0].style.transform = 'none';
+        hamburger.querySelectorAll('span')[1].style.opacity = '1';
+        hamburger.querySelectorAll('span')[2].style.transform = 'none';
+      });
+    });
+
+    // Language Toggle
+    const toggleLang = (lang) => {
+      document.querySelectorAll('[data-pt]').forEach(el => {
+        // Only update text content if it doesn't contain HTML (like arrows)
+        // Or if it's an input placeholder
+        if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+          el.setAttribute('placeholder', lang === 'pt' ? el.dataset.pt : el.dataset.es);
+        } else {
+          el.innerHTML = lang === 'pt' ? el.dataset.pt : el.dataset.es;
+        }
+      });
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      localStorage.setItem('lang', lang);
+    };
+    
+    // Set initial language if saved
+    const savedLang = localStorage.getItem('lang');
+    if (savedLang) toggleLang(savedLang);
+
+    // Hero Video — autoplay loop
+    const heroVideo = document.getElementById('hero-video');
+    if (heroVideo) {
+      heroVideo.play().catch(() => {});
+    }
+
+    // Intersection Observer for Staggered Animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15
+    };
+    
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          
+          // Trigger counter animation if it has counters
+          const counters = entry.target.querySelectorAll('.stat-counter');
+          counters.forEach(counter => {
+            if (!counter.classList.contains('counted')) {
+              animateCounter(counter);
+              counter.classList.add('counted');
+            }
+          });
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelectorAll('.stagger-el').forEach(el => {
+      observer.observe(el);
+    });
+    
+    // Counter Animation
+    function animateCounter(el) {
+      const target = parseInt(el.getAttribute('data-target'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+      
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          el.textContent = target + suffix + (target > 800 ? '+' : '');
+          clearInterval(timer);
+        } else {
+          el.textContent = Math.floor(current) + suffix;
+        }
+      }, 16);
+    }
+  </script>
+</body>
+</html>
